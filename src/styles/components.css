@@ -1,0 +1,265 @@
+/* Reusable building blocks (Phase 2). Utility-first; only repeated patterns live here. */
+
+@utility container-x {
+  width: min(1440px, 100% - 2.5rem);
+  margin-inline: auto;
+  @media (width >= 48rem) {
+    width: min(1440px, 100% - 4rem);
+  }
+  @media (width >= 75rem) {
+    width: min(1440px, 100% - 5rem);
+  }
+}
+
+@layer components {
+  /* Buttons — Figma: 16px medium, px 22 / py 11, radius 8 */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2.5 rounded-lg px-[22px] py-[11px] text-base leading-[27px] font-medium whitespace-nowrap transition-colors duration-200;
+  }
+  /* Use together: class="btn btn-primary" */
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-primary-dark;
+  }
+  .btn-outline {
+    @apply border border-primary text-primary hover:bg-primary/5;
+  }
+  .btn-dark {
+    @apply bg-ink text-white hover:bg-black;
+  }
+  .btn > img {
+    @apply size-4 shrink-0;
+  }
+
+  /* Section label pill — Figma 249:22466 */
+  .pill {
+    @apply inline-flex items-center justify-center rounded-full bg-soft px-[18px] py-[9px] text-base leading-[18px] tracking-[-0.02em] text-body;
+  }
+
+  /* Section heading + hand-drawn underline on the highlighted word */
+  .section-title {
+    @apply text-[32px] leading-[1.15] font-bold tracking-[-0.02em] text-ink md:text-[40px] desk:text-[48px];
+  }
+  .mark {
+    @apply relative inline-block font-medium whitespace-nowrap text-primary;
+  }
+  .mark > img {
+    @apply pointer-events-none absolute right-0 -bottom-[0.12em] left-0 h-[0.14em] w-full select-none;
+  }
+  .section-lead {
+    @apply text-base leading-[27px] text-body md:text-lg;
+  }
+
+  /* Cards */
+  .card {
+    @apply rounded-[var(--radius-card)] border border-line bg-white shadow-card;
+  }
+  .float-card {
+    @apply flex items-center gap-2.5 rounded-[14px] bg-white px-[17px] py-[22px] shadow-float;
+  }
+  .float-card__icon {
+    @apply flex size-[43px] shrink-0 items-center justify-center rounded-full bg-linear-to-b from-[#e2edfe] to-[#f6faff];
+  }
+
+  /* Nav links — Figma 249:22444: 16px regular, px 14 / py 8, pill radius */
+  .nav-link {
+    @apply items-center rounded-full px-3.5 py-2 text-base leading-5 text-body transition-colors hover:bg-soft hover:text-ink;
+  }
+  .mobile-link {
+    @apply rounded-lg px-3 py-3 text-lg font-medium text-ink hover:bg-soft;
+  }
+
+  /* Scroll reveal (js/reveal.js adds .is-in) */
+  .js .reveal {
+    @apply translate-y-4 opacity-0 transition-[opacity,translate] duration-700 ease-out;
+  }
+  .js .reveal.is-in {
+    @apply translate-y-0 opacity-100;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .js .reveal {
+      @apply translate-y-0 opacity-100;
+    }
+  }
+
+  /* Feature cards — Figma: title 20/28 bold, body 16/24 */
+  .feature-title {
+    @apply text-lg leading-7 font-bold text-ink md:text-xl;
+  }
+  .feature-body {
+    @apply mt-3 text-base leading-6 text-pretty text-body md:mt-4;
+  }
+
+  /* Animated Figma scenes: fixed 416×240 stage scaled by js/scenes.js (--s) */
+  .scene {
+    @apply relative aspect-[416/240] w-full overflow-hidden;
+  }
+  .scene__stage {
+    @apply absolute top-0 left-0 h-[240px] w-[416px] origin-top-left;
+    scale: var(--s, 1);
+  }
+
+  /* Screens section — Figma 249:22523 tabs, 301:4939 copy card, 301:4938 browser */
+  .screen-tab {
+    @apply flex h-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-soft px-[17px] text-base leading-[27px] font-medium whitespace-nowrap text-body transition-colors hover:text-ink aria-selected:bg-primary aria-selected:text-white;
+  }
+  .screen-panel__name {
+    @apply text-[28px] leading-tight font-bold text-ink md:text-[40px] desk:text-[48px] desk:leading-[50px];
+  }
+  .screen-panel__grid {
+    @apply mt-5 grid gap-6 desk:mt-8 desk:grid-cols-[554fr_798fr];
+  }
+  .screen-copy {
+    @apply relative isolate overflow-hidden rounded-lg border border-line bg-white p-6 md:p-10 desk:min-h-[470px] desk:px-[66px] desk:pt-[66px];
+    background-image: url('/images/screens/card-waves.webp');
+    background-size: 100% 100%;
+  }
+  .screen-check {
+    @apply flex items-start gap-3 text-sm leading-5 text-body;
+  }
+  .screen-check__icon {
+    @apply mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10;
+  }
+  .screen-check__icon img {
+    @apply size-3;
+  }
+  .screen-browser {
+    @apply flex flex-col overflow-hidden rounded-2xl border border-line bg-soft px-[11px] pb-[11px];
+  }
+  .screen-browser__bar {
+    @apply flex h-[47px] shrink-0 items-center gap-2 px-[13px];
+  }
+  .screen-browser__dots {
+    @apply flex gap-1.5;
+  }
+  .screen-browser__dots i {
+    @apply size-2.5 rounded-full bg-[#ee6b5f] not-italic nth-2:bg-[#f6c04f] nth-3:bg-[#63c653];
+  }
+  .screen-browser__url {
+    @apply ml-2 rounded border border-line bg-white/75 px-3 py-1 text-[10px] leading-4 text-body/50;
+  }
+  .screen-browser__img {
+    @apply block aspect-[777/413] w-full rounded-lg object-cover object-top;
+  }
+
+  /* How it works — step cards (Figma 249:22712: 464×485, bg #f5f7fa, r16) */
+  .step-card {
+    @apply flex list-none flex-col rounded-2xl border border-line bg-[#f5f7fa] p-6 pt-[31px] desk:h-[485px] desk:w-[464px];
+  }
+  .step-card__label {
+    @apply text-base leading-6 text-body;
+  }
+  .step-card__title {
+    @apply mt-[17px] text-lg leading-7 font-bold text-ink md:text-xl;
+  }
+  .step-card__body {
+    @apply mt-[15px] text-base leading-6 text-pretty text-body;
+  }
+  .step-card__demo {
+    @apply mt-6 shrink-0 rounded-2xl bg-white p-6 desk:mt-auto desk:h-[250px];
+  }
+  .step-card__kicker {
+    @apply text-xs leading-3 font-semibold tracking-[0.32px] text-ink uppercase;
+  }
+  .step-field {
+    @apply flex h-[45px] flex-col justify-center gap-1 rounded-lg border border-[#f2f1f3] bg-soft px-[9.6px];
+  }
+  .step-day {
+    @apply flex size-6 items-center justify-center rounded bg-primary text-xs leading-[10px] font-semibold text-soft;
+  }
+  .step-day--off {
+    @apply bg-soft text-primary;
+  }
+  .step-channel {
+    @apply flex w-[70px] flex-col items-center gap-2 text-center text-sm leading-[10px] text-body;
+  }
+  .step-channel__icon {
+    @apply flex size-12 items-center justify-center rounded-lg;
+  }
+
+  /* Built for Bangladesh tiles — Figma 249:22199: 464×132, p24, icon 50, shadow card */
+  .bd-tile {
+    @apply relative z-10 flex gap-[22px] rounded-2xl border border-line bg-white p-6 shadow-card desk:min-h-[132px];
+  }
+  .bd-tile__icon {
+    @apply flex size-[50px] shrink-0 items-center justify-center rounded-lg bg-primary/10;
+  }
+  .bd-tile__title {
+    @apply text-lg leading-7 font-bold text-ink md:text-xl;
+  }
+  .bd-tile__body {
+    @apply mt-2 max-w-[342px] text-base leading-6 text-pretty text-body;
+  }
+  .bd-dot {
+    @apply absolute top-[57.8px] hidden size-2 rounded-[4px] border-2 border-white bg-primary shadow-[0_0_0_1px_var(--color-primary),0_0_12.8px_rgb(6_106_254/0.4)] desk:block;
+  }
+
+  /* Pricing — Figma 249:22345 (464×489, p24, r16) */
+  .billing-btn {
+    @apply inline-flex h-10 cursor-pointer items-center rounded-full px-[17px] text-base leading-[27px] font-medium text-ink transition-colors aria-pressed:bg-primary aria-pressed:text-soft;
+  }
+  [data-billing='monthly'] .when-yearly,
+  [data-billing='yearly'] .when-monthly {
+    display: none;
+  }
+  .plan {
+    @apply flex flex-col rounded-2xl border border-line bg-white p-6 desk:min-h-[489px];
+  }
+  .plan--featured {
+    @apply border-primary bg-linear-to-b from-white from-[17%] to-[#f2f8ff];
+  }
+  .plan__name {
+    @apply text-xl leading-7 font-bold text-ink;
+  }
+  .plan__desc {
+    @apply text-base leading-[27px] text-body;
+  }
+  .plan__price {
+    @apply mt-[23px] flex items-baseline gap-2;
+  }
+  .plan__price > span {
+    @apply text-[40px] leading-[50px] font-bold tracking-[-0.025em] text-ink md:text-[48px];
+  }
+  .plan__price > small {
+    @apply text-base leading-[27px] text-body;
+  }
+  .plan__alt {
+    @apply mt-[5px] text-base leading-[27px] text-body;
+  }
+  .plan__cta {
+    @apply mt-8 w-full;
+  }
+  .plan__features {
+    @apply mt-8 flex flex-col gap-2;
+  }
+  .plan__features li {
+    @apply flex items-start gap-4 text-base leading-7 text-body wide:items-center wide:text-lg wide:leading-9;
+  }
+  .plan__features img {
+    @apply mt-0.5 size-6 shrink-0 wide:mt-0;
+  }
+
+  /* FAQ — Figma 249:22276: rows 83px, question 18/27 medium, icon 35 circle #f2f1f3 */
+  .faq-item {
+    @apply border-b border-line data-open:border-primary;
+  }
+  .faq-q {
+    @apply flex w-full cursor-pointer items-center justify-between gap-6 py-6 text-left text-base leading-[27px] font-medium text-ink md:text-lg;
+  }
+  .faq-item:first-child .faq-q {
+    @apply desk:pt-0;
+  }
+  .faq-icon {
+    @apply flex size-[35px] shrink-0 items-center justify-center rounded-full bg-[#f2f1f3] transition-transform duration-200;
+  }
+  .faq-item[data-open] .faq-icon {
+    @apply rotate-45;
+  }
+  .faq-a {
+    @apply -mt-2 max-w-[708px] pb-6 text-base leading-6 text-pretty text-body;
+  }
+
+  /* Checklist item */
+  .check-item {
+    @apply flex items-start gap-3 text-base leading-6 text-body;
+  }
+}

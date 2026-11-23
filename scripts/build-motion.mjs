@@ -1,0 +1,152 @@
+// Build src/styles/motion.css from Figma motion exports (design/motion/*.json).
+//
+// Figma's get_motion_context returns, per animated layer, a CSS snippet:
+//   @property … ; custom props ; transform … ; animation: kf_… ; @keyframes kf_… { … }
+// We turn every snippet into a rule for [data-m="<nodeId>"], de-duplicate identical
+// keyframes, round numbers, drop properties CSS can't animate (path-trim), and wrap
+// everything in prefers-reduced-motion: no-preference.
+//
+// Usage: node scripts/build-motion.mjs
+
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { join } from 'node:path';
+
+const SRC = 'design/motion';
+const OUT = 'src/styles/motion.css';
+const UNSUPPORTED = ['path-trim'];
+
+const round = (s) => s.replace(/-?\d+\.\d{4,}/g, (n) => String(+parseFloat(n).toFixed(3)));
+
+/**
+ * Drop keyframe stops that lie (within tolerance) on the straight line between neighbours.
+ * Works on single-property numeric keyframes like "0% { opacity: 0.2; } 1% { opacity: 0.25; } …".
+ * Stops carrying an animation-timing-function, or non-numeric values, are always kept.
+ */
+function simplify(body) {
+  const stops = [...body.matchAll(/([\d.]+)% \{ ([^}]*) \}/g)].map((m) => ({ p: +m[1], raw: m[2].trim() }));
+  const val = (s) => {
+    if (/animation-timing-function/.test(s.raw)) return NaN;
+    const m = s.raw.match(/^[\w-]+:\s*(-?[\d.]+)(px)?;?$/);
+    return m ? +m[1] : NaN;
+  };
+  const nums = stops.map(val);
+  const finite = nums.filter(Number.isFinite);
+  if (stops.length < 4 || finite.length !== stops.length) return body;
+  const range = Math.max(...finite) - Math.min(...finite) || 1;
+  const tol = range * 0.01;
+  const keep = [0];
+  for (let i = 1; i < stops.length - 1; i++) {
+    const a = keep[keep.length - 1];
+    const b = i + 1;
+    const t = (stops[i].p - stops[a].p) / (stops[b].p - stops[a].p || 1);
+    const lerp = nums[a] + (nums[b] - nums[a]) * t;
+    if (Math.abs(lerp - nums[i]) > tol) keep.push(i);
+  }
+  keep.push(stops.length - 1);
+  return keep.map((i) => `${stops[i].p}% { ${stops[i].raw} }`).join(' ');
+}
+
+/** Split a Figma snippet into { props: [], decls: string, keyframes: [{name, body}] } */
+function parse(css) {
+  const props = [];
+  const keyframes = [];
+  let rest = '';
+  let i = 0;
+  while (i < css.length) {
+    const at = css.indexOf('@', i);
+    if (at === -1) {
+      rest += css.slice(i);
+      break;
+    }
+    rest += css.slice(i, at);
+    // find matching brace block
+    const open = css.indexOf('{', at);
+    let depth = 0;
+    let j = open;
+    for (; j < css.length; j++) {
+      if (css[j] === '{') depth++;
+      else if (css[j] === '}' && --depth === 0) break;
+    }
+    const head = css.slice(at, open).trim();
+    const body = css.slice(open + 1, j).trim();
+    if (head.startsWith('@property')) props.push(`${head} { ${body} }`);
+    else if (head.startsWith('@keyframes')) keyframes.push({ name: head.split(/\s+/)[1], body });
+    i = j + 1;
+  }
+  return { props, decls: rest.trim(), keyframes };
+}
+
+const propSet = new Set();
+const kfByHash = new Map(); // hash -> {name, body}
+const rules = [];
+
+for (const file of readdirSync(SRC).filter((f) => f.endsWith('.json'))) {
+  const data = JSON.parse(readFileSync(join(SRC, file), 'utf8'));
+  for (const node of data.nodes ?? []) {
+    const css = node.codeSnippets?.css;
+    if (!css) continue;
+    const { props, decls, keyframes } = parse(css);
+    props.forEach((p) => propSet.add(p));
+
+    const rename = new Map();
+    const dropped = new Set();
+    for (const kf of keyframes) {
+      if (UNSUPPORTED.some((u) => kf.name.includes(u))) {
+        dropped.add(kf.name);
+        continue;
+      }
+      const body = simplify(round(kf.body));
+      const hash = createHash('sha1').update(body).digest('hex').slice(0, 8);
+      if (!kfByHash.has(hash)) kfByHash.set(hash, { name: `m-${hash}`, body });
+      rename.set(kf.name, `m-${hash}`);
+    }
+
+    let d = round(decls);
+    // rewrite animation list: rename + remove dropped
+    d = d.replace(/animation:\s*([^;]+);/, (_, list) => {
+      const items = list
+        .split(',')
+        .map((s) => s.trim())
+        .filter((s) => !dropped.has(s.split(/\s+/)[0]))
+        .map((s) => {
+          const [name, ...rest] = s.split(/\s+/);
+          return [rename.get(name) ?? name, ...rest].join(' ');
+        });
+      return items.length ? `animation: ${items.join(', ')};` : '';
+    });
+    if (!/animation:/.test(d)) d = d.replace(/animation-iteration-count:[^;]+;/, '');
+    if (!d.trim()) continue;
+
+    const decl = d
+      .split(';')
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .map((s) => `    ${s};`)
+      .join('\n');
+    rules.push(`  /* ${node.nodeName} */\n  [data-m='${node.nodeId}'] {\n${decl}\n  }`);
+  }
+}
+
+const kfCss = [...kfByHash.values()]
+  .map(({ name, body }) => `  @keyframes ${name} { ${body} }`)
+  .join('\n');
+
+const out = `/* AUTO-GENERATED by scripts/build-motion.mjs from design/motion/*.json — do not edit by hand. */
+
+${[...propSet].join('\n')}
+
+@media (prefers-reduced-motion: no-preference) {
+${rules.join('\n\n')}
+
+${kfCss}
+
+  /* Run scenes only while visible (js/reveal.js toggles .is-playing) */
+  [data-scene]:not(.is-playing) [data-m] {
+    animation-play-state: paused;
+  }
+}
+`;
+
+writeFileSync(OUT, out);
+console.log(`${OUT}: ${rules.length} rules, ${kfByHash.size} keyframes, ${(out.length / 1024).toFixed(1)} KB`);

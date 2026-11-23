@@ -1,0 +1,19 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="1920" height="1068" viewBox="0 0 1920 1068" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Mask group">
+<mask id="mask0_0_13" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="1921" height="1068">
+<path id="Vector 6" d="M4.27571e-05 160.763C716.346 -117.988 1530.4 21.9462 1920 160.782L1920 1068L0.00012207 1068L4.27571e-05 160.763Z" fill="#C4C4C4"/>
+</mask>
+<g mask="url(#mask0_0_13)">
+<g id="Ellipse 87" filter="url(#filter0_f_0_13)">
+<ellipse cx="960" cy="1089.86" rx="385.301" ry="47.6736" fill="#CCF1FA"/>
+</g>
+</g>
+</g>
+<defs>
+<filter id="filter0_f_0_13" x="344.699" y="812.183" width="1230.6" height="555.347" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="115" result="effect1_foregroundBlur_0_13"/>
+</filter>
+</defs>
+</svg>

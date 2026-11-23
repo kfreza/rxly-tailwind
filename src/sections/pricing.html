@@ -1,0 +1,79 @@
+<!-- Pricing — Figma 349:11. Prices match the live plans (Solo / Clinic / Hospital; yearly = 10× monthly). -->
+<section id="pricing" data-pricing data-billing="monthly" class="relative isolate overflow-hidden pt-24 pb-20 desk:pt-[120px] desk:pb-[121px]">
+  <img src="/images/pricing/bg.webp" alt="" width="1920" height="1068" class="pointer-events-none absolute top-0 left-1/2 -z-10 h-full min-h-[1068px] w-[1920px] max-w-none -translate-x-1/2 rotate-180 select-none" loading="lazy" />
+  <img src="/images/pricing/overlay.svg" alt="" class="pointer-events-none absolute top-0 left-1/2 -z-10 h-full min-h-[1068px] w-[1920px] max-w-none -translate-x-1/2 select-none" loading="lazy" />
+
+  <div class="container-x">
+    <header class="reveal flex flex-col items-center text-center">
+      <p class="pill bg-white" data-i18n="pricing.label">Pricing plan</p>
+      <h2 class="section-title mt-4">
+        <span data-i18n="pricing.title">One price per clinic.</span><br />
+        <span data-i18n="pricing.title_2">Every feature,</span>
+        <span class="mark"><span data-i18n="pricing.title_mark">every plan</span><img src="/images/underline/pricing.svg" alt="" /></span><span data-i18n="pricing.title_end">.</span>
+      </h2>
+      <p class="section-lead mt-4 max-w-[810px]" data-i18n="pricing.lead">Only the number of doctors changes. Start with 14 free days and some free texts; pay by bKash, Nagad or bank, monthly or yearly.</p>
+
+      <!-- Billing toggle (249:22426) -->
+      <div class="mt-8 inline-flex items-center gap-1 rounded-full border border-line bg-white p-[5px]" role="group" aria-label="Billing period">
+        <button type="button" data-billing-option="monthly" aria-pressed="true" class="billing-btn" data-i18n="pricing.monthly">Monthly</button>
+        <button type="button" data-billing-option="yearly" aria-pressed="false" class="billing-btn gap-1.5">
+          <span data-i18n="pricing.yearly">Yearly</span>
+          <span class="rounded-full bg-[#f2f1f3] px-1 text-[10px] leading-5 font-medium text-body" data-i18n="pricing.save">Save up to 17%</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="mt-8 grid gap-6 md:grid-cols-2 desk:grid-cols-3">
+      <!-- Solo (249:22345) -->
+      <article class="plan reveal">
+        <h3 class="plan__name">Solo</h3>
+        <p class="plan__desc" data-i18n="pricing.solo_desc">One doctor's chamber</p>
+        <div class="plan__price when-monthly"><span data-i18n="pricing.solo_m">৳1,000</span><small data-i18n="pricing.per_month">a month</small></div>
+        <div class="plan__price when-yearly"><span data-i18n="pricing.solo_y">৳10,000</span><small data-i18n="pricing.per_year">a year</small></div>
+        <p class="plan__alt when-monthly" data-i18n="pricing.solo_alt_y">or ৳10,000 a year</p>
+        <p class="plan__alt when-yearly" data-i18n="pricing.solo_alt_m">or ৳1,000 a month</p>
+        <a href="https://app.rxly.net/register?plan=solo" class="btn btn-dark plan__cta"><span data-i18n="cta.start">Start free</span><img src="/images/icons/arrow-right-white.svg" alt="" width="16" height="16" /></a>
+        <ul class="plan__features">
+          <li><img src="/images/icons/check-dark.svg" alt="" width="24" height="24" /><span data-i18n="pricing.solo_f1">1 doctor</span></li>
+          <li><img src="/images/icons/check-dark.svg" alt="" width="24" height="24" /><span data-i18n="pricing.f_all">Serials, queue, pad, video, cash and reports</span></li>
+          <li><img src="/images/icons/check-dark.svg" alt="" width="24" height="24" /><span data-i18n="pricing.f_texts">Texts to patients and their own pages</span></li>
+          <li><img src="/images/icons/check-dark.svg" alt="" width="24" height="24" /><span data-i18n="pricing.f_trial">14 days free, no card needed</span></li>
+        </ul>
+      </article>
+
+      <!-- Clinic (249:22372) — highlighted -->
+      <article class="plan plan--featured reveal">
+        <h3 class="plan__name">Clinic</h3>
+        <p class="plan__desc" data-i18n="pricing.clinic_desc">Up to five doctors under one roof</p>
+        <div class="plan__price when-monthly"><span data-i18n="pricing.clinic_m">৳2,500</span><small data-i18n="pricing.per_month">a month</small></div>
+        <div class="plan__price when-yearly"><span data-i18n="pricing.clinic_y">৳25,000</span><small data-i18n="pricing.per_year">a year</small></div>
+        <p class="plan__alt when-monthly" data-i18n="pricing.clinic_alt_y">or ৳25,000 a year</p>
+        <p class="plan__alt when-yearly" data-i18n="pricing.clinic_alt_m">or ৳2,500 a month</p>
+        <a href="https://app.rxly.net/register?plan=clinic" class="btn btn-primary plan__cta"><span data-i18n="cta.start">Start free</span><img src="/images/icons/arrow-right-white.svg" alt="" width="16" height="16" /></a>
+        <ul class="plan__features">
+          <li><img src="/images/icons/check-dark.svg" alt="" width="24" height="24" /><span data-i18n="pricing.clinic_f1">Up to 5 doctors</span></li>
+          <li><img src="/images/icons/check-dark.svg" alt="" width="24" height="24" /><span data-i18n="pricing.f_all">Serials, queue, pad, video, cash and reports</span></li>
+          <li><img src="/images/icons/check-dark.svg" alt="" width="24" height="24" /><span data-i18n="pricing.f_texts">Texts to patients and their own pages</span></li>
+          <li><img src="/images/icons/check-dark.svg" alt="" width="24" height="24" /><span data-i18n="pricing.f_trial">14 days free, no card needed</span></li>
+        </ul>
+      </article>
+
+      <!-- Hospital (249:22399) -->
+      <article class="plan reveal md:col-span-2 desk:col-span-1">
+        <h3 class="plan__name">Hospital</h3>
+        <p class="plan__desc" data-i18n="pricing.hospital_desc">As many doctors as you have</p>
+        <div class="plan__price when-monthly"><span data-i18n="pricing.hospital_m">৳5,000</span><small data-i18n="pricing.per_month">a month</small></div>
+        <div class="plan__price when-yearly"><span data-i18n="pricing.hospital_y">৳50,000</span><small data-i18n="pricing.per_year">a year</small></div>
+        <p class="plan__alt when-monthly" data-i18n="pricing.hospital_alt_y">or ৳50,000 a year</p>
+        <p class="plan__alt when-yearly" data-i18n="pricing.hospital_alt_m">or ৳5,000 a month</p>
+        <a href="https://app.rxly.net/register?plan=hospital" class="btn btn-dark plan__cta"><span data-i18n="cta.start">Start free</span><img src="/images/icons/arrow-right-white.svg" alt="" width="16" height="16" /></a>
+        <ul class="plan__features">
+          <li><img src="/images/icons/check-dark.svg" alt="" width="24" height="24" /><span data-i18n="pricing.hospital_f1">Any number of doctors</span></li>
+          <li><img src="/images/icons/check-dark.svg" alt="" width="24" height="24" /><span data-i18n="pricing.f_all">Serials, queue, pad, video, cash and reports</span></li>
+          <li><img src="/images/icons/check-dark.svg" alt="" width="24" height="24" /><span data-i18n="pricing.f_texts">Texts to patients and their own pages</span></li>
+          <li><img src="/images/icons/check-dark.svg" alt="" width="24" height="24" /><span data-i18n="pricing.f_trial">14 days free, no card needed</span></li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>

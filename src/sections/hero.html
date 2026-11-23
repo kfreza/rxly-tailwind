@@ -1,0 +1,81 @@
+<!-- Hero — Figma 249:22466 … 269:3641 -->
+<section id="top" class="relative isolate -mt-[76px] overflow-hidden pt-[124px] pb-16 desk:-mt-[109px] desk:pt-[190px] desk:pb-[120px]">
+  <!-- Background waves (249:22254) + corner glow (345:7) -->
+  <img src="/images/hero/bg-waves.webp" alt="" width="1920" height="1024" class="pointer-events-none absolute top-0 left-1/2 -z-10 h-[1024px] w-[1920px] max-w-none -translate-x-1/2 select-none" fetchpriority="low" decoding="async" />
+  <img src="/images/hero/glow-ellipse.svg" alt="" class="pointer-events-none absolute -top-[308px] -left-[291px] -z-10 size-[655px] max-w-none select-none" />
+
+  <div class="container-x flex flex-col items-center text-center">
+    <p class="pill">
+      <span class="mr-1 font-semibold text-ink" data-i18n="hero.pill_new">New:</span>
+      <span data-i18n="hero.pill">video consults in the same queue</span>
+    </p>
+
+    <h1 class="mt-4 text-[44px] leading-[1.02] font-extrabold tracking-[-0.019em] text-ink md:text-[72px] desk:text-[96px] desk:leading-[90px]">
+      <span data-i18n="hero.title_1">Run your clinic from</span><br />
+      <span data-i18n="hero.title_2">one</span>
+      <span class="mark">
+        <span data-i18n="hero.title_mark">screen</span>
+        <img src="/images/underline/hero.svg" alt="" />
+      </span>
+    </h1>
+
+    <p class="mt-6 max-w-[952px] text-lg leading-[28px] text-body desk:text-xl desk:leading-[30px]" data-i18n="hero.lead">
+      Serials by text, a live queue, a prescription pad that knows every medicine, video consults and the cash: practice software for chambers and clinics in Bangladesh.
+    </p>
+
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-2">
+      <a href="https://app.rxly.net/register" class="btn btn-primary">
+        <span data-i18n="cta.start">Start free</span>
+        <img src="/images/icons/arrow-right.svg" alt="" width="16" height="16" />
+      </a>
+      <a href="#screens" class="btn btn-outline">
+        <img src="/images/icons/play.svg" alt="" width="16" height="16" />
+        <span data-i18n="hero.see">See the screen</span>
+      </a>
+    </div>
+
+    <p class="mt-2 flex flex-wrap justify-center gap-x-3 gap-y-1 text-sm leading-5 text-body">
+      <span data-i18n="hero.trust_1">14 days free</span><span aria-hidden="true">·</span>
+      <span data-i18n="hero.trust_2">No card</span><span aria-hidden="true">·</span>
+      <span data-i18n="hero.trust_3">Bangla and English</span><span aria-hidden="true">·</span>
+      <span data-i18n="hero.trust_4">Nothing to install</span>
+    </p>
+
+    <!-- App figure (249:22487) with tilted back card (249:22481) and floating cards -->
+    <div class="relative mt-12 w-full max-w-[1196px] desk:mt-[79px]">
+      <div aria-hidden="true" class="absolute top-[3%] -left-[3.5%] hidden h-[93%] w-[82%] -rotate-3 rounded-[24px] border border-line-2 bg-linear-to-b from-white to-tint md:block"></div>
+
+      <figure class="relative overflow-hidden rounded-2xl border border-line-2 bg-soft desk:rounded-[24px]">
+        <div class="flex items-center gap-2 px-4 py-2.5">
+          <span class="flex gap-1.5" aria-hidden="true">
+            <span class="size-2.5 rounded-full bg-[#ee6b5f]"></span>
+            <span class="size-2.5 rounded-full bg-[#f6c04f]"></span>
+            <span class="size-2.5 rounded-full bg-[#63c653]"></span>
+          </span>
+          <span class="ml-2 rounded border border-[#f2f1f3] bg-white px-3 py-1 text-xs leading-4 text-body">apollo.rxly.net/desk</span>
+        </div>
+        <div class="px-[0.92%] pb-[0.92%]">
+          <img src="/images/hero/desk.webp" srcset="/images/hero/desk-800.webp 800w, /images/hero/desk-1200.webp 1200w, /images/hero/desk.webp 2160w" sizes="(min-width: 1276px) 1174px, calc(100vw - 48px)" alt="Rxly front desk: the day's sittings, quick booking and the queue in four lanes" width="1174" height="732" class="block w-full rounded-t-lg rounded-b-2xl" fetchpriority="high" />
+        </div>
+      </figure>
+
+      <!-- Floating: Serial booked (249:22508) -->
+      <div class="float-card absolute top-[33%] -left-[2%] wide:-left-[9.6%] hidden w-[284px] text-left md:flex">
+        <span class="float-card__icon"><img src="/images/icons/calendar.svg" alt="" width="16" height="16" /></span>
+        <span class="flex flex-col">
+          <span class="text-lg leading-[27px] font-semibold text-ink" data-i18n="hero.float1_title">Serial 15 booked</span>
+          <span class="text-xs leading-5 text-body" data-i18n="hero.float1_body">Texted to 017…678 · around 5:31 PM</span>
+        </span>
+      </div>
+
+      <!-- Floating: Prescription sent (249:22497) -->
+      <div class="float-card absolute top-[48.4%] -right-[2%] wide:-right-[8.7%] hidden w-[243px] text-left md:flex">
+        <span class="float-card__icon"><img src="/images/icons/prescription.svg" alt="" width="16" height="16" /></span>
+        <span class="flex flex-col">
+          <span class="text-lg leading-[27px] font-semibold text-ink" data-i18n="hero.float2_title">Prescription sent</span>
+          <span class="text-xs leading-5 text-body" data-i18n="hero.float2_body">Printed, and texted as a link</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>

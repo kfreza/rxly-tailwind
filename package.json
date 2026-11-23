@@ -1,0 +1,30 @@
+{
+  "name": "rxly-landing",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run i18n && npm run seo && vite build",
+    "preview": "vite preview --port 4173",
+    "i18n": "node scripts/extract-i18n.mjs",
+    "seo": "node scripts/build-seo.mjs",
+    "motion": "node scripts/build-motion.mjs",
+    "images": "node scripts/optimize-images.mjs",
+    "og": "node scripts/og-image.mjs",
+    "qa": "node scripts/qa.mjs",
+    "qa:anim": "node scripts/anim-check.mjs",
+    "shot": "node scripts/shot.mjs"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.5",
+    "puppeteer-core": "^25.18.1",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^4.3.5",
+    "vite": "^8.3.8"
+  },
+  "dependencies": {
+    "@fontsource-variable/noto-sans-bengali": "^5.3.0",
+    "@fontsource-variable/plus-jakarta-sans": "^5.3.0"
+  }
+}
