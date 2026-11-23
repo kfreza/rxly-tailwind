@@ -51,10 +51,29 @@ export function initPinCards() {
     fit.style.transform = '';
     fitScale = 1;
     if (!pinned()) return;
-    const pad = parseFloat(getComputedStyle(stage).paddingTop) || 0;
-    const room = stage.clientHeight - pad - 24; // 24px breathing room at the bottom
-    const need = fit.offsetHeight;
-    fitScale = clamp(room / need, 0.55, 1);
+    // Keep everything at its real Figma size first; give up spacing before scaling content.
+    //  1. room for Figma's 120px top + 121px bottom → 100%, full spacing
+    //  2. otherwise content stays 100% and the spacing shrinks (Figma proportions, min 40 / 24)
+    //  3. only if even that doesn't fit, the content scales down (min 55%)
+    const PAD_TOP = 120;
+    const PAD_BOTTOM = 121;
+    const MIN_TOP = 40;
+    const MIN_BOTTOM = 24;
+    const room = stage.clientHeight;
+    const content = fit.offsetHeight;
+    let padTop = PAD_TOP;
+    if (room >= content + PAD_TOP + PAD_BOTTOM) {
+      fitScale = 1;
+    } else if (room >= content + MIN_TOP + MIN_BOTTOM) {
+      fitScale = 1;
+      const spare = room - content - MIN_TOP - MIN_BOTTOM;
+      const full = PAD_TOP - MIN_TOP + (PAD_BOTTOM - MIN_BOTTOM);
+      padTop = MIN_TOP + spare * ((PAD_TOP - MIN_TOP) / full);
+    } else {
+      fitScale = clamp((room - MIN_TOP - MIN_BOTTOM) / content, 0.55, 1);
+      padTop = MIN_TOP;
+    }
+    section.style.setProperty('--pin-pad', `${padTop.toFixed(1)}px`);
     if (fitScale < 1) fit.style.transform = `scale(${fitScale.toFixed(4)})`;
   };
 

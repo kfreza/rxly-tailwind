@@ -202,8 +202,19 @@
     @apply inline-flex h-10 cursor-pointer items-center rounded-full px-[17px] text-base leading-[27px] font-medium text-ink transition-colors aria-pressed:bg-primary aria-pressed:text-soft;
   }
   /* Figma 249:22430: "Yearly" sits 20px after Monthly, badge 5px after the word, flush right */
+  /* Figma 249:22428 / 249:22432: pill 96×40, Yearly area 150 wide, badge 79×20 */
+  .billing-btn--monthly {
+    @apply min-w-24 justify-center;
+  }
   .billing-btn--yearly {
-    @apply gap-[5px] pr-0 pl-5 aria-pressed:pr-3 aria-pressed:pl-[17px];
+    @apply min-w-[150px] gap-[5px] pr-0 pl-5 aria-pressed:pr-[10px] aria-pressed:pl-[17px];
+  }
+  /* Selected Yearly mirrors selected Monthly: badge turns translucent white on the blue pill */
+  .billing-badge {
+    @apply inline-flex min-w-[79px] justify-center rounded-full bg-[#f2f1f3] px-1 text-[10px] leading-5 font-medium text-body transition-colors;
+  }
+  [aria-pressed='true'] > .billing-badge {
+    @apply bg-white/20 text-white;
   }
   /* Pricing pinned stage (js/pin-cards.js): on desktop with motion allowed, one panel
      (background + heading + cards) pins under the nav for the spacer's scroll distance. */
@@ -216,7 +227,8 @@
       top: var(--nav-h, 109px);
       height: calc(100vh - var(--nav-h, 109px));
       /* !important: beats the stage's Tailwind relative / padding / overflow-x-clip utilities */
-      padding-top: clamp(24px, 6vh, 80px) !important;
+      /* Figma spacing: 120px above the pill, 121px below the cards (scaled with the content) */
+      padding-top: var(--pin-pad, 120px) !important;
       padding-bottom: 0 !important;
       overflow: hidden !important;
     }
