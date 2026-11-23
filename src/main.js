@@ -8,8 +8,6 @@ import { initReveal } from './js/reveal.js';
 import { initScatter } from './js/scatter.js';
 import { initPinCards } from './js/pin-cards.js';
 
-document.querySelectorAll('[data-year]').forEach((el) => (el.textContent = String(new Date().getFullYear())));
-
 initI18n();
 initNav();
 initTabs();

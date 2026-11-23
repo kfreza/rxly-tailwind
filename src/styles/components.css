@@ -21,7 +21,8 @@
     @apply bg-primary text-white hover:bg-primary-dark;
   }
   .btn-outline {
-    @apply border border-primary text-primary hover:bg-primary/5;
+    /* Figma strokes sit inside the 49px button: shave the border off the padding */
+    @apply border border-primary py-[10px] text-primary hover:bg-primary/5;
   }
   .btn-dark {
     @apply bg-ink text-white hover:bg-black;
@@ -37,7 +38,7 @@
 
   /* Section heading + hand-drawn underline on the highlighted word */
   .section-title {
-    @apply text-[32px] leading-[1.15] font-bold tracking-[-0.02em] text-ink md:text-[40px] desk:text-[48px];
+    @apply text-[32px] leading-[1.15] font-bold tracking-[-0.025em] text-ink md:text-[40px] desk:text-[48px] desk:leading-[50.4px];
   }
   .mark {
     @apply relative inline-block font-medium whitespace-nowrap text-primary;
@@ -85,6 +86,13 @@
   .feature-title {
     @apply text-lg leading-7 font-bold text-ink md:text-xl;
   }
+  /* Figma doesn't balance card titles (only section titles): wrap normally */
+  .feature-title,
+  .step-card__title,
+  .bd-tile__title,
+  .plan__name {
+    text-wrap: wrap;
+  }
   .feature-body {
     @apply mt-3 text-base leading-6 text-pretty text-body md:mt-4;
   }
@@ -100,7 +108,7 @@
     @apply mt-5 grid gap-6 desk:mt-8 desk:grid-cols-[554fr_798fr];
   }
   .screen-copy {
-    @apply relative isolate overflow-hidden rounded-lg border border-line bg-white p-6 md:p-10 desk:min-h-[470px] desk:px-[66px] desk:pt-[66px];
+    @apply relative isolate overflow-hidden rounded-lg border border-line bg-white p-6 md:p-10 desk:h-[470px] desk:px-[65px] desk:pt-[65px];
     background-image: url('/images/screens-card-waves.webp');
     background-size: 100% 100%;
   }
@@ -114,10 +122,10 @@
     @apply size-3;
   }
   .screen-browser {
-    @apply flex flex-col overflow-hidden rounded-2xl border border-line bg-soft px-[11px] pb-[11px];
+    @apply flex flex-col overflow-hidden rounded-2xl border border-line bg-soft pr-[9px] pb-[9px] pl-[10px] desk:h-[470px];
   }
   .screen-browser__bar {
-    @apply flex h-[47px] shrink-0 items-center gap-2 px-[13px];
+    @apply flex h-[46px] shrink-0 items-center gap-2 px-[13px];
   }
   .screen-browser__dots {
     @apply flex gap-1.5;
@@ -134,14 +142,11 @@
 
   /* How it works — step cards (Figma 249:22712: 464×485, bg #f5f7fa, r16) */
   .step-card {
-    @apply relative flex list-none flex-col rounded-2xl border border-transparent p-6 pt-[31px] will-change-transform desk:min-h-[485px];
+    @apply relative flex list-none flex-col rounded-2xl border border-transparent p-[23px] pt-[30px] will-change-transform desk:min-h-[485px];
     /* Figma 249:22627/22713/22746: 1px gradient stroke, #066afe at the top → #e5edf5 at 60% */
     background:
       linear-gradient(#f5f7fa, #f5f7fa) padding-box,
       linear-gradient(to bottom, var(--color-primary) 0%, var(--color-line) 60%) border-box;
-  }
-  [data-scattering] .step-card {
-    @apply shadow-[0_18px_40px_rgb(17_17_17/0.06)];
   }
   .step-card__label {
     @apply text-base leading-6 text-body;
@@ -176,10 +181,11 @@
 
   /* Built for Bangladesh tiles — Figma 249:22199: 464×132, p24, icon 50, shadow card */
   .bd-tile {
-    @apply relative z-10 flex gap-[22px] rounded-2xl border border-line bg-white p-6 shadow-card desk:min-h-[132px];
+    /* Figma: icon at 25.7 / 25, text at 98 / 24 from the outer edge (1px border inside) */
+    @apply relative z-10 flex gap-[22.3px] rounded-2xl border border-line bg-white p-[23px] pl-[24.7px] shadow-card desk:min-h-[132px];
   }
   .bd-tile__icon {
-    @apply flex size-[50px] shrink-0 items-center justify-center rounded-lg bg-primary/10;
+    @apply mt-px flex size-[50px] shrink-0 items-center justify-center rounded-lg bg-primary/10;
   }
   .bd-tile__title {
     @apply text-lg leading-7 font-bold text-ink md:text-xl;
@@ -188,12 +194,16 @@
     @apply mt-2 max-w-[342px] text-base leading-6 text-pretty text-body;
   }
   .bd-dot {
-    @apply absolute top-[57.8px] hidden size-2 rounded-[4px] border-2 border-white bg-primary shadow-[0_0_0_1px_var(--color-primary),0_0_12.8px_rgb(6_106_254/0.4)] desk:block;
+    @apply absolute top-[56.8px] hidden size-2 rounded-[4px] border-2 border-white bg-primary shadow-[0_0_0_1px_var(--color-primary),0_0_12.8px_rgb(6_106_254/0.4)] desk:block;
   }
 
   /* Pricing — Figma 249:22345 (464×489, p24, r16) */
   .billing-btn {
     @apply inline-flex h-10 cursor-pointer items-center rounded-full px-[17px] text-base leading-[27px] font-medium text-ink transition-colors aria-pressed:bg-primary aria-pressed:text-soft;
+  }
+  /* Figma 249:22430: "Yearly" sits 20px after Monthly, badge 5px after the word, flush right */
+  .billing-btn--yearly {
+    @apply gap-[5px] pr-0 pl-5 aria-pressed:pr-3 aria-pressed:pl-[17px];
   }
   /* Pricing pinned stage (js/pin-cards.js): on desktop with motion allowed, one panel
      (background + heading + cards) pins under the nav for the spacer's scroll distance. */
@@ -222,7 +232,7 @@
     display: none;
   }
   .plan {
-    @apply relative flex flex-col rounded-2xl border border-line bg-white p-6 desk:min-h-[489px];
+    @apply relative flex flex-col rounded-2xl border border-line bg-white p-[23px] desk:min-h-[489px];
   }
   .plan--featured {
     @apply border-primary bg-linear-to-b from-white from-[17%] to-[#f2f8ff];
@@ -234,16 +244,17 @@
     @apply text-base leading-[27px] text-body;
   }
   .plan__price {
-    @apply mt-[23px] flex items-baseline gap-2;
+    /* Figma: "a month" is centred on the price, not baseline-aligned */
+    @apply mt-6 flex items-center gap-2;
   }
   .plan__price > span {
-    @apply text-[40px] leading-[50px] font-bold tracking-[-0.025em] text-ink md:text-[48px];
+    @apply text-[40px] leading-[50.4px] font-bold tracking-[-0.025em] text-ink md:text-[48px];
   }
   .plan__price > small {
     @apply text-base leading-[27px] text-body;
   }
   .plan__alt {
-    @apply mt-[5px] text-base leading-[27px] text-body;
+    @apply mt-1 text-base leading-[27px] text-body;
   }
   .plan__cta {
     @apply mt-8 w-full;
@@ -263,10 +274,17 @@
     @apply border-b border-line data-open:border-primary;
   }
   .faq-q {
-    @apply flex w-full cursor-pointer items-center justify-between gap-6 py-6 text-left text-base leading-[27px] font-medium text-ink md:text-lg;
+    @apply flex w-full cursor-pointer items-center justify-between gap-6 pt-6 pb-[23px] text-left text-base leading-[27px] font-medium text-ink md:text-lg;
   }
   .faq-item:first-child .faq-q {
     @apply desk:pt-0;
+  }
+  /* Figma: the last question has no divider and no bottom padding (column = 617px) */
+  .faq-item:last-child {
+    @apply desk:border-b-0;
+  }
+  .faq-item:last-child:not([data-open]) .faq-q {
+    @apply desk:pb-0;
   }
   .faq-icon {
     @apply flex size-[35px] shrink-0 items-center justify-center rounded-full bg-[#f2f1f3] transition-transform duration-200;
@@ -275,7 +293,7 @@
     @apply rotate-45;
   }
   .faq-a {
-    @apply -mt-2 max-w-[708px] pb-6 text-base leading-6 text-pretty text-body;
+    @apply -mt-[11px] max-w-[708px] pb-[23px] text-base leading-6 text-pretty text-body;
   }
 
   /* Checklist item */

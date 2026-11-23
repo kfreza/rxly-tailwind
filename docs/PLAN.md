@@ -102,6 +102,7 @@ docs/                       BRIEF.md, PLAN.md
 - [x] Lighthouse: **mobile 99 / 100 / 100 / 100, desktop 100 / 100 / 100 / 100** (performance / accessibility / best practices / SEO)
 
 ### Phase 8: QA and handoff ✅
+- [x] Pixel pass against Figma at 1920 (section-aligned render diff + element measurements): page height 8582 = Figma; every section starts within 2px of Figma; elements within ~1px. Key rule learned: Figma strokes sit *inside* the box, so a 24px-padded bordered card uses `p-[23px]`. Remaining differences are font anti-aliasing (Figma vs Chrome rasteriser), the team's animated SVGs, and the globe stand-in.
 - [x] `npm run qa`: 42 checks pass (tabs, keyboard, FAQ, pricing, menu, language and persistence, anchors, images, console/network errors)
 - [x] `npm run build` → `dist/` (2.0 MB including fonts and images)
 - [ ] Manual check on a real iPhone (Safari) and an Android phone

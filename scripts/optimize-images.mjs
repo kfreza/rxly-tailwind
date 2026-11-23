@@ -10,7 +10,7 @@ const SRC_KEEP = 'design/source-images';
 const MIN_BYTES = 40 * 1024;
 // largest CSS width the image is shown at (px); output = 2× (capped at source width)
 const DISPLAY = {
-  'faq-dome.png': 467, 'how-stethoscope.png': 293,
+  'faq-dome.png': 603, 'how-stethoscope.png': 293,
   'feature-pad.png': 416, 'feature-cash.png': 416, 'feature-video.png': 538,
   'feature-cash-bg.png': 464, 'feature-glow-card-bg.png': 1300, 'feature-video-bg.png': 586,
   'screens-panel-bg.png': 1440, 'screens-card-waves.png': 554, 'screens-book.png': 200, 'screens-status.png': 200,
