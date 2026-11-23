@@ -89,15 +89,6 @@
     @apply mt-3 text-base leading-6 text-pretty text-body md:mt-4;
   }
 
-  /* Animated Figma scenes: fixed 416×240 stage scaled by js/scenes.js (--s) */
-  .scene {
-    @apply relative aspect-[416/240] w-full overflow-hidden;
-  }
-  .scene__stage {
-    @apply absolute top-0 left-0 h-[240px] w-[416px] origin-top-left;
-    scale: var(--s, 1);
-  }
-
   /* Screens section — Figma 249:22523 tabs, 301:4939 copy card, 301:4938 browser */
   .screen-tab {
     @apply flex h-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-soft px-[17px] text-base leading-[27px] font-medium whitespace-nowrap text-body transition-colors hover:text-ink aria-selected:bg-primary aria-selected:text-white;

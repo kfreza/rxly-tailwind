@@ -9,11 +9,9 @@
     "preview": "vite preview --port 4173",
     "i18n": "node scripts/extract-i18n.mjs",
     "seo": "node scripts/build-seo.mjs",
-    "motion": "node scripts/build-motion.mjs",
     "images": "node scripts/optimize-images.mjs",
     "og": "node scripts/og-image.mjs",
     "qa": "node scripts/qa.mjs",
-    "qa:anim": "node scripts/anim-check.mjs",
     "qa:scatter": "node scripts/scatter-check.mjs",
     "shot": "node scripts/shot.mjs"
   },

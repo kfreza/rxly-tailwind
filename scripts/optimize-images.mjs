@@ -27,7 +27,8 @@ for (const file of targets) {
   const out = file.replace(/\.(png|jpe?g)$/i, '.webp');
   const meta = await sharp(file).metadata();
   const width = Math.min(meta.width, (DISPLAY[rel] ?? 960) * 2);
-  await sharp(file).resize({ width, withoutEnlargement: true }).webp({ quality: 80, effort: 6, alphaQuality: 90 }).toFile(out);
+  // .rotate() with no args applies EXIF orientation (some Figma exports are rotated JPEGs)
+  await sharp(file).rotate().resize({ width, withoutEnlargement: true }).webp({ quality: 80, effort: 6, alphaQuality: 90 }).toFile(out);
   const before = statSync(file).size, after = statSync(out).size;
   const keep = join(SRC_KEEP, rel);
   mkdirSync(dirname(keep), { recursive: true });

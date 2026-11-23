@@ -5,7 +5,7 @@
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
-const files = ['index.html', ...['src/sections', 'src/scenes', 'src/partials'].flatMap((d) =>
+const files = ['index.html', ...['src/sections', 'src/partials'].flatMap((d) =>
   existsSync(d) ? readdirSync(d).filter((f) => f.endsWith('.html')).map((f) => join(d, f)) : [])];
 
 const decode = (s) => s.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>');

@@ -25,7 +25,7 @@ _Created 2026-11-23. Source of truth for building the rxly.net landing page from
 |---|---|---|
 | Nav | `345:6` (logo `332:7167`) | `src/sections/nav.html` |
 | Hero | pill `249:22466`, title `249:22470`, underline `249:22469`, lead `249:22468`, buttons `249:22473` / `249:22477`, trust `249:22471`, app figure + floating cards `269:3641`, waves `249:22254`, glow `345:7` | `hero.html` |
-| What it does | `324:7138` (scenes: queue `249:22776`, patient page `249:22974`, brand `249:23845`) | `features.html`, `src/scenes/*` |
+| What it does | `324:7138` (scenes: queue `249:22776`, patient page `249:22974`, brand `249:23845`; now replaced by the team's animated SVGs `scene-queue/page/brand.svg`) | `features.html` |
 | The screens | band `249:22253`, arc `249:22440`, heading `249:22517`–`22520`, tabs `249:22523`, panel `301:4937`, copy card `301:4939`, browser `301:4938` / `301:4940` / `301:4941`, screenshot `249:22568` | `screens.html` |
 | How it works | `324:7141` | `how.html` |
 | Built for Bangladesh | `249:22185` (globe ellipse `249:22196` has a **video fill**) | `bangladesh.html` |
@@ -183,7 +183,7 @@ The page is built and checked. See [PLAN.md](PLAN.md) for the phase checklist, s
 - **Screens tab screenshots** come from the live site (`rxly.net/images/landing/desk.jpg`, `room.jpg`, `pad.jpg`, `book.png`, `status.png`). The copy for the Doctor's room, Prescription pad and Patient's phone tabs also comes from the live site, because Figma only has the Front desk tab.
 - **FAQ answers** come from the live site (Figma only shows the first answer).
 - **Bangla:** 107 strings reuse the official Rxly app translations (`design/i18n/bn-official.json`, read from the live app's Bangla locale); 62 page-specific strings were written for this page (`src/i18n/bn.manual.json`).
-- **Figma animations** (3 scenes in "What it does") are reproduced from Figma's exported keyframes (`design/motion/features.json` → `src/styles/motion.css`). They are not render-blocking and are disabled for reduced-motion users.
+- **"What it does" animations**: the 3 illustrations are animated SVGs supplied by the team (`public/images/scene-queue.svg`, `scene-page.svg`, `scene-brand.svg`), used unmodified as `<img>`.
 - **Globe video** in "Built for Bangladesh": Figma uses a video fill that the Figma API can't export. An animated SVG stand-in (`public/images/bd-globe.svg`) matches the frame.
 - **Buttons** use Plus Jakarta Sans Medium (Figma uses Inter Medium for button labels only; unified to the brand font).
 - **Floating hero cards and the FAQ dome** use Figma's exact offsets from 1440px up, and smaller offsets between 1200 and 1439 so they aren't clipped.

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="416" height="240" viewBox="0 0 416 240" role="img" aria-label="Animated highlighted link feeding an advancing queue toward a service desk">
+<defs>
+ <linearGradient id="bgGrad" x2="0" y2="1"><stop stop-color="#fdfeff"/><stop offset="1" stop-color="#eef3fb"/></linearGradient>
+ <linearGradient id="deskGrad" x2="0" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#f3f7fd"/></linearGradient>
+ <radialGradient id="floor"><stop stop-color="#9fb2d0" stop-opacity=".22"/><stop offset="1" stop-color="#9fb2d0" stop-opacity="0"/></radialGradient>
+ <filter id="softShadow" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#3a5a91" flood-opacity=".14"/></filter>
+ <style><![CDATA[
+ .hlGlow{transform-box:fill-box;transform-origin:center;animation:hlPulse 3.6s ease-in-out infinite}
+ @keyframes hlPulse{0%,100%{transform:scale(1);opacity:.10}50%{transform:scale(1.18,1.9);opacity:.22}}
+ .spark{animation:spark 3.6s ease-in-out infinite}
+ @keyframes spark{0%{transform:translateY(0);opacity:0}10%{opacity:1}50%{transform:translateY(128px);opacity:1}62%,100%{transform:translateY(128px);opacity:0}}
+ .tk{transform-box:fill-box;transform-origin:center;animation:flow 9s linear infinite}
+ @keyframes flow{0%{transform:translateX(0) scale(1);opacity:0}5%{opacity:1}68%{transform:translateX(238px) scale(1);opacity:1}76%,100%{transform:translateX(238px) scale(.45);opacity:0}}
+ .rx{animation:rx 1.5s cubic-bezier(.22,.68,.32,1) infinite}
+ @keyframes rx{0%{transform:translate(330px,150px) scale(.45);opacity:0}18%{transform:translate(330px,141px) scale(1);opacity:1}58%{transform:translate(330px,137px) scale(1);opacity:1}100%{transform:translate(343px,106px) scale(.85);opacity:0}}
+ .ping{transform-box:fill-box;transform-origin:center;animation:ping 2.4s ease-out infinite}
+ @keyframes ping{0%{transform:scale(.7);opacity:.55}70%,100%{transform:scale(3.2);opacity:0}}
+ .trackFlow{animation:dash 2.4s linear infinite}
+ @keyframes dash{from{stroke-dashoffset:0}to{stroke-dashoffset:-48}}
+ @media(prefers-reduced-motion:reduce){.tk{animation:none;opacity:1;transform:translateX(var(--x,0px))}.rx,.spark,.ping{animation:none;opacity:0}.trackFlow,.hlGlow{animation:none}}
+ ]]></style>
+</defs>
+<rect width="416" height="240" rx="18" fill="url(#bgGrad)"/>
+<rect x=".5" y=".5" width="415" height="239" rx="17.5" fill="none" stroke="#e6ecf5"/>
+<ellipse cx="212" cy="202" rx="176" ry="13" fill="url(#floor)"/>
+<g stroke-linecap="round" stroke-width="7">
+ <path d="M52 46H88 M96 46H142 M196 46H230 M238 46H262" stroke="#dde5f0"/>
+ <path d="M52 66H102 M110 66H150" stroke="#e7edf6"/>
+</g>
+<rect class="hlGlow" x="150" y="40" width="38" height="12" rx="6" fill="#3d6df0" opacity=".12"/>
+<path d="M150 46H188" stroke="#3d6df0" stroke-width="7" stroke-linecap="round"/>
+<path d="M169 58V188" stroke="#3d6df0" stroke-width="1.4" stroke-dasharray="2.5 4.5" stroke-linecap="round" opacity=".35"/>
+<circle class="spark" cx="169" cy="58" r="2.6" fill="#3d6df0"/>
+<path d="M40 196H288" stroke="#e4eaf4" stroke-width="2.5" stroke-linecap="round"/>
+<path class="trackFlow" d="M40 196H288" stroke="#c8d8f6" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="2 10"/>
+<g class="tk" style="--x:0px;animation-delay:0s"><circle cx="48" cy="187" r="8.5" fill="#dbe6ff" stroke="#4a72f0" stroke-width="2"/></g>
+<g class="tk" style="--x:40px;animation-delay:-1.5s"><circle cx="48" cy="187" r="8.5" fill="#dbe6ff" stroke="#4a72f0" stroke-width="2"/></g>
+<g class="tk" style="--x:80px;animation-delay:-3s"><circle cx="48" cy="187" r="8.5" fill="#dbe6ff" stroke="#4a72f0" stroke-width="2"/></g>
+<g class="tk" style="--x:120px;animation-delay:-4.5s"><circle cx="48" cy="187" r="8.5" fill="#dbe6ff" stroke="#4a72f0" stroke-width="2"/></g>
+<g class="tk" style="--x:160px;animation-delay:-6s"><circle cx="48" cy="187" r="8.5" fill="#dbe6ff" stroke="#4a72f0" stroke-width="2"/></g>
+<g class="tk" style="--x:200px;animation-delay:-7.5s"><circle cx="48" cy="187" r="8.5" fill="#dbe6ff" stroke="#4a72f0" stroke-width="2"/></g>
+<g class="rx">
+ <rect x="-10" y="-12" width="20" height="24" rx="4" fill="#fff" stroke="#3d6df0" stroke-width="1.6"/>
+ <path d="M-5 -5H5 M-5 0H5 M-5 5H0" stroke="#bdd0f7" stroke-width="1.8" stroke-linecap="round"/>
+</g>
+<g filter="url(#softShadow)">
+ <rect x="292" y="152" width="84" height="44" rx="10" fill="url(#deskGrad)" stroke="#e3eaf5"/>
+ <rect x="286" y="140" width="96" height="14" rx="7" fill="#dfe8f6"/>
+</g>
+<rect x="302" y="166" width="26" height="5" rx="2.5" fill="#e9eff9"/>
+<rect x="302" y="176" width="16" height="5" rx="2.5" fill="#eff4fb"/>
+<circle class="ping" cx="366" cy="147" r="3.5" fill="none" stroke="#2ec4a0" stroke-width="1.6"/>
+<circle cx="366" cy="147" r="3.5" fill="#2ec4a0"/>
+</svg>
