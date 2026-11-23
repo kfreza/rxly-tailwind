@@ -184,14 +184,14 @@ The page is built and checked. See [PLAN.md](PLAN.md) for the phase checklist, s
 - **FAQ answers** come from the live site (Figma only shows the first answer).
 - **Bangla:** 107 strings reuse the official Rxly app translations (`design/i18n/bn-official.json`, read from the live app's Bangla locale); 62 page-specific strings were written for this page (`src/i18n/bn.manual.json`).
 - **Figma animations** (3 scenes in "What it does") are reproduced from Figma's exported keyframes (`design/motion/features.json` → `src/styles/motion.css`). They are not render-blocking and are disabled for reduced-motion users.
-- **Globe video** in "Built for Bangladesh": Figma uses a video fill that the Figma API can't export. An animated SVG stand-in (`public/images/bd/globe.svg`) matches the frame.
+- **Globe video** in "Built for Bangladesh": Figma uses a video fill that the Figma API can't export. An animated SVG stand-in (`public/images/bd-globe.svg`) matches the frame.
 - **Buttons** use Plus Jakarta Sans Medium (Figma uses Inter Medium for button labels only; unified to the brand font).
 - **Floating hero cards and the FAQ dome** use Figma's exact offsets from 1440px up, and smaller offsets between 1200 and 1439 so they aren't clipped.
 
 ### Needs review / confirmation
 | Item | Where | Note |
 |---|---|---|
-| Globe video file | `bangladesh.html`, `public/images/bd/globe.svg` | Send the original MP4/WebM to replace the stand-in |
+| Globe video file | `bangladesh.html`, `public/images/bd-globe.svg` | Send the original MP4/WebM to replace the stand-in |
 | App URLs | nav, hero, pricing, CTA | Currently `https://app.rxly.net/login` and `https://app.rxly.net/register?plan=…` |
 | Bangla, 62 strings | `src/i18n/bn.manual.json` | Headings re-ordered for Bangla word order; prices in Bangla numerals |
 | "How it works" demo copy | `how.html` | Figma placeholders kept as designed: `$80`, `care.clario.health/maya`, "Dr. Maya Khan", "Amelia Brown" |

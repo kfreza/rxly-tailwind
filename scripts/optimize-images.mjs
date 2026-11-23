@@ -1,4 +1,4 @@
-// Convert heavy PNG/JPG in public/images to WebP at 2× their largest display size,
+// Convert heavy PNG/JPG in public/images (flat folder, <section>-<what>.<ext>) to WebP at 2× their largest display size,
 // move the originals to design/source-images/, and rewrite references in src/ + index.html.
 // Usage: node scripts/optimize-images.mjs
 import sharp from 'sharp';
@@ -10,12 +10,12 @@ const SRC_KEEP = 'design/source-images';
 const MIN_BYTES = 40 * 1024;
 // largest CSS width the image is shown at (px); output = 2× (capped at source width)
 const DISPLAY = {
-  'faq/dome.png': 467, 'how/stethoscope.png': 293,
-  'features/a7cdf.png': 416, 'features/659b9.png': 416, 'features/9a646.png': 538,
-  'features/58d60.png': 464, 'features/2b4b1.png': 1300, 'features/fe3dd.png': 586,
-  'screens/panel-bg.png': 1440, 'screens/card-waves.png': 554, 'screens/book.png': 200, 'screens/status.png': 200,
-  'screens/desk.jpg': 798, 'screens/room.jpg': 798, 'screens/pad.jpg': 798,
-  'hero/desk.png': 1174, 'hero/bg-waves.png': 1920, 'cta/bg.png': 1820, 'pricing/bg.png': 1920,
+  'faq-dome.png': 467, 'how-stethoscope.png': 293,
+  'feature-pad.png': 416, 'feature-cash.png': 416, 'feature-video.png': 538,
+  'feature-cash-bg.png': 464, 'feature-glow-card-bg.png': 1300, 'feature-video-bg.png': 586,
+  'screens-panel-bg.png': 1440, 'screens-card-waves.png': 554, 'screens-book.png': 200, 'screens-status.png': 200,
+  'screens-desk.jpg': 798, 'screens-room.jpg': 798, 'screens-pad.jpg': 798,
+  'hero-desk.png': 1174, 'hero-bg-waves.png': 1920, 'cta-bg.png': 1820, 'pricing-bg.png': 1920,
 };
 
 const walk = (d) => readdirSync(d).flatMap((f) => (statSync(join(d, f)).isDirectory() ? walk(join(d, f)) : [join(d, f)]));

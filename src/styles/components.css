@@ -110,7 +110,7 @@
   }
   .screen-copy {
     @apply relative isolate overflow-hidden rounded-lg border border-line bg-white p-6 md:p-10 desk:min-h-[470px] desk:px-[66px] desk:pt-[66px];
-    background-image: url('/images/screens/card-waves.webp');
+    background-image: url('/images/screens-card-waves.webp');
     background-size: 100% 100%;
   }
   .screen-check {

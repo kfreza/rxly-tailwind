@@ -36,11 +36,13 @@ src/
   styles/motion.css         GENERATED (scripts/build-motion.mjs), lazy-loaded
   js/*.js                   behaviour
   i18n/en.json, bn.json     GENERATED; edit bn.manual.json for Bangla overrides
-public/images/              optimised WebP/SVG (served)
+public/images/              ALL served images in one flat folder, named <section>-<what>.<ext>
+                            (hero-, feature-, scene-queue-/page-/brand-NN, screens-, how-, bd-,
+                            pricing-, faq-, cta-, icon-, underline-, logo*)
 design/
   motion/features.json      Figma motion export (source for motion.css)
   i18n/bn-official.json     official Rxly Bangla strings (from the live app)
-  source-images/            original PNG/JPG exports (source for WebP)
+  source-images/            original PNG/JPG exports, same flat names (source for WebP)
 scripts/                    build + QA tools (see package.json)
 docs/                       BRIEF.md, PLAN.md
 ```
@@ -110,7 +112,7 @@ docs/                       BRIEF.md, PLAN.md
 
 ## Waiting on
 
-- [ ] **Globe video** for the "Built for Bangladesh" centre (Figma layer `249:22196` has a video fill that can't be exported). An animated SVG stand-in is in `public/images/bd/globe.svg`; drop the MP4/WebM in and swap the `<img>`.
+- [ ] **Globe video** for the "Built for Bangladesh" centre (Figma layer `249:22196` has a video fill that can't be exported). An animated SVG stand-in is in `public/images/bd-globe.svg`; drop the MP4/WebM in and swap the `<img>`.
 - [ ] **Log in / Start free URLs.** Currently `https://app.rxly.net/login` and `/register?plan=…`. Confirm the real app URLs.
 - [ ] **Bangla review** of the 62 page-specific strings in `src/i18n/bn.manual.json`
 - [ ] **Placeholder copy in Figma's "How it works" cards:** `$80` (should be ৳?), `care.clario.health/maya` (should be an Rxly link?), "Dr. Maya Khan", "Amelia Brown" (Bangladeshi names elsewhere)

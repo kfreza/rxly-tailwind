@@ -33,3 +33,6 @@ desktop.ini
 # Temp
 *.tmp
 .cache/
+
+# Original Figma exports (25 MB) — only the optimised WebP in public/images is committed
+design/source-images/
