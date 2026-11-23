@@ -11,9 +11,9 @@
     </header>
 
     <!-- Fanned step cards: stacked on mobile/tablet, fanned (±5°) from 1200px -->
-    <ol class="reveal mx-auto mt-10 grid max-w-[464px] gap-6 desk:relative desk:mt-[30px] desk:block desk:h-[530px] desk:max-w-[708px]">
+    <ol data-scatter data-start="0.8" data-end="0.2" class="reveal mx-auto mt-10 grid max-w-[464px] gap-6 desk:mt-[30px] desk:max-w-none desk:grid-cols-3">
       <!-- Step 1 (249:22626) -->
-      <li class="step-card desk:absolute desk:top-[19px] desk:left-1/2 desk:z-10 desk:-translate-x-[calc(50%+100px)] desk:-rotate-5 desk:border-primary">
+      <li class="step-card" data-scatter-item data-offset="-100" data-rot="-5" data-y="0" data-z="1">
         <p class="step-card__label" data-i18n="how.step1_label">STEP - 01</p>
         <h3 class="step-card__title" data-i18n="how.step1_title">Add your doctors and their sitting hours</h3>
         <p class="step-card__body" data-i18n="how.step1_body">Name, degrees, room, fee, the days and hours they sit, and whether they take video calls. Two minutes per doctor.</p>
@@ -42,7 +42,7 @@
       </li>
 
       <!-- Step 2 (249:22712) -->
-      <li class="step-card desk:absolute desk:top-[19px] desk:left-1/2 desk:z-20 desk:-translate-x-1/2">
+      <li class="step-card" data-scatter-item data-offset="0" data-rot="0" data-y="0" data-z="2">
         <p class="step-card__label" data-i18n="how.step2_label">STEP - 02</p>
         <h3 class="step-card__title" data-i18n="how.step2_title">Share the booking link, or book at the desk</h3>
         <p class="step-card__body" data-i18n="how.step2_body">Put the link on Facebook or your sign, or the QR code at the door. The desk books by phone number in ten seconds.</p>
@@ -64,7 +64,7 @@
       </li>
 
       <!-- Step 3 (249:22745) -->
-      <li class="step-card desk:absolute desk:top-[24px] desk:left-1/2 desk:z-30 desk:-translate-x-[calc(50%-104px)] desk:rotate-5 desk:border-primary">
+      <li class="step-card" data-scatter-item data-offset="104" data-rot="5" data-y="5" data-z="3">
         <p class="step-card__label" data-i18n="how.step3_label">STEP - 03</p>
         <h3 class="step-card__title" data-i18n="how.step3_title">Call the next patient</h3>
         <p class="step-card__body" data-i18n="how.step3_body">The television updates, the next patient gets a text, the pad opens with their history. The cash is counted for you at the end of the day.</p>

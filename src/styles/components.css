@@ -143,7 +143,14 @@
 
   /* How it works — step cards (Figma 249:22712: 464×485, bg #f5f7fa, r16) */
   .step-card {
-    @apply flex list-none flex-col rounded-2xl border border-line bg-[#f5f7fa] p-6 pt-[31px] desk:h-[485px] desk:w-[464px];
+    @apply relative flex list-none flex-col rounded-2xl border border-transparent p-6 pt-[31px] will-change-transform desk:min-h-[485px];
+    /* Figma 249:22627/22713/22746: 1px gradient stroke, #066afe at the top → #e5edf5 at 60% */
+    background:
+      linear-gradient(#f5f7fa, #f5f7fa) padding-box,
+      linear-gradient(to bottom, var(--color-primary) 0%, var(--color-line) 60%) border-box;
+  }
+  [data-scattering] .step-card {
+    @apply shadow-[0_18px_40px_rgb(17_17_17/0.06)];
   }
   .step-card__label {
     @apply text-base leading-6 text-body;
@@ -170,7 +177,7 @@
     @apply bg-soft text-primary;
   }
   .step-channel {
-    @apply flex w-[70px] flex-col items-center gap-2 text-center text-sm leading-[10px] text-body;
+    @apply flex w-[70px] flex-col items-center gap-2 text-center text-sm leading-[10px] whitespace-nowrap text-body;
   }
   .step-channel__icon {
     @apply flex size-12 items-center justify-center rounded-lg;
@@ -202,7 +209,7 @@
     display: none;
   }
   .plan {
-    @apply flex flex-col rounded-2xl border border-line bg-white p-6 desk:min-h-[489px];
+    @apply relative flex flex-col rounded-2xl border border-line bg-white p-6 desk:min-h-[489px];
   }
   .plan--featured {
     @apply border-primary bg-linear-to-b from-white from-[17%] to-[#f2f8ff];

@@ -84,6 +84,7 @@ docs/                       BRIEF.md, PLAN.md
 - [x] ARIA tabs with arrow/Home/End keys; the tab strip scrolls horizontally on mobile
 - [x] FAQ accordion (one open at a time)
 - [x] Monthly/Yearly pricing (CSS-driven; both prices are translatable text)
+- [x] "How it works" scroll-scatter (`js/scatter.js`): from 1200px the 3 step cards start in Figma's fanned stack (−5° / 0° / +5°, step 3 on top) and spread into a 3-card row as you scroll (grid top 80% → 20% of the viewport). Below 1200px and with reduced motion they show as a plain stack/row. Check with `npm run qa:scatter`
 - [x] EN ⇄ বাংলা switch, remembered in `localStorage`, no flash on reload
 - [x] Scroll-in reveals (not on the hero); **Figma scene animations reproduced from Figma's own keyframes**, paused off-screen
 
