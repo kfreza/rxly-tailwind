@@ -1,9 +1,12 @@
-<!-- Pricing — Figma 349:11. Prices match the live plans (Solo / Clinic / Hospital; yearly = 10× monthly). -->
-<section id="pricing" data-pricing data-billing="monthly" class="relative isolate overflow-hidden pt-24 pb-20 desk:pt-[120px] desk:pb-[121px]">
-  <img src="/images/pricing-bg.webp" alt="" width="1920" height="1068" class="pointer-events-none absolute top-0 left-1/2 -z-10 h-full min-h-[1068px] w-[1920px] max-w-none -translate-x-1/2 rotate-180 select-none" loading="lazy" />
-  <img src="/images/pricing-overlay.svg" alt="" class="pointer-events-none absolute top-0 left-1/2 -z-10 h-full min-h-[1068px] w-[1920px] max-w-none -translate-x-1/2 select-none" loading="lazy" />
+<!-- Pricing — Figma 349:11. Prices match the live plans (Solo / Clinic / Hospital; yearly = 10× monthly).
+     Desktop: one pinned stage (background + heading + cards) under the nav; the cards rise into the
+     Figma row as you scroll through [data-pin-spacer]. See js/pin-cards.js. -->
+<section id="pricing" data-pricing data-billing="monthly" data-pin-section class="relative isolate">
+  <div class="pin-stage relative isolate overflow-x-clip pt-24 pb-20 desk:pt-[120px] desk:pb-[121px]" data-pin-stage>
+  <img src="/images/pricing-bg.webp" alt="" width="1920" height="1068" class="pointer-events-none absolute top-0 left-1/2 -z-10 h-[1068px] w-[1920px] max-w-none -translate-x-1/2 rotate-180 select-none" loading="lazy" />
+  <img src="/images/pricing-overlay.svg" alt="" class="pointer-events-none absolute top-0 left-1/2 -z-10 h-[1068px] w-[1920px] max-w-none -translate-x-1/2 select-none" loading="lazy" />
 
-  <div class="container-x">
+  <div class="container-x pin-fit" data-pin-fit>
     <header class="reveal flex flex-col items-center text-center">
       <p class="pill bg-white" data-i18n="pricing.label">Pricing plan</p>
       <h2 class="section-title mt-4">
@@ -23,9 +26,10 @@
       </div>
     </header>
 
-    <div class="mt-8 grid gap-6 md:grid-cols-2 desk:grid-cols-3">
+    <div data-pin-grid class="mt-8 grid gap-6 md:grid-cols-2 desk:grid-cols-3">
       <!-- Solo (249:22345) -->
-      <article class="plan reveal">
+      <div class="pin-track" data-pin-track>
+        <article class="plan h-full" data-pin-card data-ry="-32">
         <h3 class="plan__name">Solo</h3>
         <p class="plan__desc" data-i18n="pricing.solo_desc">One doctor's chamber</p>
         <div class="plan__price when-monthly"><span data-i18n="pricing.solo_m">৳1,000</span><small data-i18n="pricing.per_month">a month</small></div>
@@ -40,9 +44,11 @@
           <li><img src="/images/icon-check-dark.svg" alt="" width="24" height="24" /><span data-i18n="pricing.f_trial">14 days free, no card needed</span></li>
         </ul>
       </article>
+      </div>
 
       <!-- Clinic (249:22372) — highlighted -->
-      <article class="plan plan--featured reveal">
+      <div class="pin-track" data-pin-track>
+        <article class="plan plan--featured h-full" data-pin-card data-ry="0">
         <h3 class="plan__name">Clinic</h3>
         <p class="plan__desc" data-i18n="pricing.clinic_desc">Up to five doctors under one roof</p>
         <div class="plan__price when-monthly"><span data-i18n="pricing.clinic_m">৳2,500</span><small data-i18n="pricing.per_month">a month</small></div>
@@ -57,9 +63,11 @@
           <li><img src="/images/icon-check-dark.svg" alt="" width="24" height="24" /><span data-i18n="pricing.f_trial">14 days free, no card needed</span></li>
         </ul>
       </article>
+      </div>
 
       <!-- Hospital (249:22399) -->
-      <article class="plan reveal md:col-span-2 desk:col-span-1">
+      <div class="pin-track md:col-span-2 desk:col-span-1" data-pin-track>
+        <article class="plan h-full" data-pin-card data-ry="32">
         <h3 class="plan__name">Hospital</h3>
         <p class="plan__desc" data-i18n="pricing.hospital_desc">As many doctors as you have</p>
         <div class="plan__price when-monthly"><span data-i18n="pricing.hospital_m">৳5,000</span><small data-i18n="pricing.per_month">a month</small></div>
@@ -74,6 +82,10 @@
           <li><img src="/images/icon-check-dark.svg" alt="" width="24" height="24" /><span data-i18n="pricing.f_trial">14 days free, no card needed</span></li>
         </ul>
       </article>
+      </div>
     </div>
   </div>
+  </div>
+  <!-- Scroll distance while the stage is pinned (desktop, motion allowed) -->
+  <div class="pin-spacer" data-pin-spacer aria-hidden="true"></div>
 </section>

@@ -6,6 +6,7 @@ import { initPricing } from './js/pricing.js';
 import { initI18n } from './js/i18n.js';
 import { initReveal } from './js/reveal.js';
 import { initScatter } from './js/scatter.js';
+import { initPinCards } from './js/pin-cards.js';
 
 document.querySelectorAll('[data-year]').forEach((el) => (el.textContent = String(new Date().getFullYear())));
 
@@ -16,3 +17,4 @@ initAccordion();
 initPricing();
 initReveal();
 initScatter();
+initPinCards();

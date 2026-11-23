@@ -195,6 +195,28 @@
   .billing-btn {
     @apply inline-flex h-10 cursor-pointer items-center rounded-full px-[17px] text-base leading-[27px] font-medium text-ink transition-colors aria-pressed:bg-primary aria-pressed:text-soft;
   }
+  /* Pricing pinned stage (js/pin-cards.js): on desktop with motion allowed, one panel
+     (background + heading + cards) pins under the nav for the spacer's scroll distance. */
+  .pin-spacer {
+    height: 0;
+  }
+  @media (width >= 75rem) and (prefers-reduced-motion: no-preference) {
+    .pin-stage {
+      position: sticky !important;
+      top: var(--nav-h, 109px);
+      height: calc(100vh - var(--nav-h, 109px));
+      /* !important: beats the stage's Tailwind relative / padding / overflow-x-clip utilities */
+      padding-top: clamp(24px, 6vh, 80px) !important;
+      padding-bottom: 0 !important;
+      overflow: hidden !important;
+    }
+    .pin-spacer {
+      height: 140vh;
+    }
+    .pin-fit {
+      transform-origin: 50% 0;
+    }
+  }
   [data-billing='monthly'] .when-yearly,
   [data-billing='yearly'] .when-monthly {
     display: none;
