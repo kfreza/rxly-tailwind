@@ -216,27 +216,23 @@
   [aria-pressed='true'] > .billing-badge {
     @apply bg-white/20 text-white;
   }
-  /* Pricing pinned stage (js/pin-cards.js): on desktop with motion allowed, one panel
-     (background + heading + cards) pins under the nav for the spacer's scroll distance. */
+  /* Pricing pinned stage (js/pin-cards.js). The stage (background + heading + cards) pins under
+     the nav ONLY when the whole Figma section (120px + content + 121px) fits the window at real
+     size — js adds .is-pinned. Otherwise the section scrolls normally (exact Figma layout) and the
+     cards animate in as they scroll into view. */
   .pin-spacer {
     height: 0;
   }
   @media (width >= 75rem) and (prefers-reduced-motion: no-preference) {
-    .pin-stage {
+    [data-pin-section].is-pinned .pin-stage {
       position: sticky !important;
       top: var(--nav-h, 109px);
       height: calc(100vh - var(--nav-h, 109px));
-      /* !important: beats the stage's Tailwind relative / padding / overflow-x-clip utilities */
-      /* Figma spacing: 120px above the pill, 121px below the cards (scaled with the content) */
-      padding-top: var(--pin-pad, 120px) !important;
-      padding-bottom: 0 !important;
+      /* !important: beats the stage's Tailwind relative / overflow-x-clip utilities */
       overflow: hidden !important;
     }
-    .pin-spacer {
+    [data-pin-section].is-pinned .pin-spacer {
       height: 140vh;
-    }
-    .pin-fit {
-      transform-origin: 50% 0;
     }
   }
   [data-billing='monthly'] .when-yearly,

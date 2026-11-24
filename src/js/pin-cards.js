@@ -1,24 +1,29 @@
-// Pricing: pinned stage with 3D cards rising into the row.
+// Pricing: 3D cards rising into the Figma row.
 // Motion modelled on the testimonials section of norio-nextjs-dev.pages.dev (GSAP ScrollTrigger
-// there); re-implemented here without a library.
+// there); re-implemented here without a library. Everything always renders at real Figma size.
 //
-// Desktop (≥1200px, motion allowed) — CSS makes [data-pin-stage] sticky under the nav with the
-// height of the screen; [data-pin-spacer] gives it scroll distance. Background, heading and the
-// Figma 3-card row live inside the stage, so they can never drift apart or overlap.
-//   - The cards start below the stage, tipped back (rotateX 58°, rotateY −32° / 0° / +32°,
-//     z −180px, scale 0.82) and rise one after another into their slots, flattening as they go.
-//   - If the stage content is taller than the screen, it is scaled down uniformly to fit.
-// Mobile / tablet: no pinning; each card gets a lighter tilt (rotateX 32°, y 64px, z −80px)
-// as it scrolls in. prefers-reduced-motion: no animation.
+// Modes (chosen from the window size, never while scrolling):
+//  • pinned  — desktop (≥1200px), motion allowed, AND the whole Figma section fits under the nav
+//              (120px top + heading + toggle + cards + 121px bottom). [data-pin-stage] becomes
+//              sticky (CSS, .is-pinned) for the spacer's scroll distance; cards start below the
+//              stage and rise into their slots one after another.
+//  • flow    — desktop, motion allowed, shorter window. No pinning: the section scrolls normally
+//              with Figma's exact layout and spacing; the cards rise/flatten (same 3D values,
+//              staggered) as they scroll into view.
+//  • mobile  — <1200px: lighter tilt per card as it scrolls in.
+//  • reduced — prefers-reduced-motion: static Figma layout, no animation.
 const DESK = '(min-width: 75rem)';
 const SMOOTH = 0.35; // seconds to catch up with the scroll position (≈ scrub: 0.35)
-// Each card's share of the pinned scroll progress (0…1): [start, end]
+const PAD_TOP = 120; // Figma: section top → pill
+const PAD_BOTTOM = 121; // Figma: cards → section bottom
+// Pinned: each card's share of the pinned scroll progress [start, end]; 0.82…1 holds the row.
 const WINDOWS = [
   [0.0, 0.42],
   [0.2, 0.62],
   [0.4, 0.82],
-]; // 0.82…1 = hold the finished row
-const MOBILE = { rx: 32, y: 64, z: -80, scale: 0.82, start: 0.85, end: 80 };
+];
+const DESK_FROM = { rx: 58, y: 120, z: -180, scale: 0.82 };
+const MOBILE_FROM = { rx: 32, y: 64, z: -80, scale: 0.82 };
 
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 const easeOut = (t) => 1 - Math.pow(1 - t, 3);
@@ -37,88 +42,73 @@ export function initPinCards() {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   const desk = window.matchMedia(DESK);
   const state = cards.map(() => ({ target: 0, current: 0 }));
-  let fitScale = 1;
+  let mode = 'reduced';
   let raf = 0;
   let last = 0;
   let visible = false;
 
-  const pinned = () => desk.matches && !reduced.matches;
+  const navHeight = () => (nav ? nav.offsetHeight : 109);
 
-  // Nav height → CSS (--nav-h) and fit-to-screen scale for the stage content.
+  // Pick the mode. Pinned only when the full Figma section fits at real size.
   const layout = () => {
-    const navH = nav ? nav.offsetHeight : 109;
+    const navH = navHeight();
     section.style.setProperty('--nav-h', `${navH}px`);
-    fit.style.transform = '';
-    fitScale = 1;
-    if (!pinned()) return;
-    // Keep everything at its real Figma size first; give up spacing before scaling content.
-    //  1. room for Figma's 120px top + 121px bottom → 100%, full spacing
-    //  2. otherwise content stays 100% and the spacing shrinks (Figma proportions, min 40 / 24)
-    //  3. only if even that doesn't fit, the content scales down (min 55%)
-    const PAD_TOP = 120;
-    const PAD_BOTTOM = 121;
-    const MIN_TOP = 40;
-    const MIN_BOTTOM = 24;
-    const room = stage.clientHeight;
-    const content = fit.offsetHeight;
-    let padTop = PAD_TOP;
-    if (room >= content + PAD_TOP + PAD_BOTTOM) {
-      fitScale = 1;
-    } else if (room >= content + MIN_TOP + MIN_BOTTOM) {
-      fitScale = 1;
-      const spare = room - content - MIN_TOP - MIN_BOTTOM;
-      const full = PAD_TOP - MIN_TOP + (PAD_BOTTOM - MIN_BOTTOM);
-      padTop = MIN_TOP + spare * ((PAD_TOP - MIN_TOP) / full);
-    } else {
-      fitScale = clamp((room - MIN_TOP - MIN_BOTTOM) / content, 0.55, 1);
-      padTop = MIN_TOP;
+    if (reduced.matches) mode = 'reduced';
+    else if (!desk.matches) mode = 'mobile';
+    else {
+      const need = PAD_TOP + fit.offsetHeight + PAD_BOTTOM;
+      mode = window.innerHeight - navH >= need ? 'pinned' : 'flow';
     }
-    section.style.setProperty('--pin-pad', `${padTop.toFixed(1)}px`);
-    if (fitScale < 1) fit.style.transform = `scale(${fitScale.toFixed(4)})`;
+    section.classList.toggle('is-pinned', mode === 'pinned');
   };
 
   const measure = () => {
     const vh = window.innerHeight;
-    if (pinned()) {
-      // Progress 0 when the section top is 60% down the screen, 1 at the end of the spacer.
-      const navH = nav ? nav.offsetHeight : 109;
+    if (mode === 'pinned') {
+      // 0 when the section top is 60% down the screen, 1 at the end of the spacer.
       const top = section.getBoundingClientRect().top;
       const begin = vh * 0.6;
-      const span = begin - navH + (spacer ? spacer.offsetHeight : 0);
+      const span = begin - navHeight() + (spacer ? spacer.offsetHeight : 0);
       const p = clamp((begin - top) / Math.max(1, span), 0, 1);
-      WINDOWS.forEach(([a, b], i) => {
-        if (state[i]) state[i].target = clamp((p - a) / (b - a), 0, 1);
-      });
-    } else {
+      WINDOWS.forEach(([a, b], i) => (state[i].target = clamp((p - a) / (b - a), 0, 1)));
+    } else if (mode === 'flow') {
+      // Cards sit in one row: animate from "top at 95% of the screen" to "top at 45%",
+      // each card starting a little after the previous one.
+      const range = vh * 0.5;
       tracks.forEach((track, i) => {
         const top = track.getBoundingClientRect().top; // wrapper is never transformed
-        const start = vh * MOBILE.start;
-        state[i].target = clamp((start - top) / Math.max(1, start - MOBILE.end), 0, 1);
+        const start = vh * 0.95 - i * range * 0.18;
+        state[i].target = clamp((start - top) / range, 0, 1);
+      });
+    } else if (mode === 'mobile') {
+      tracks.forEach((track, i) => {
+        const top = track.getBoundingClientRect().top;
+        const start = vh * 0.85;
+        state[i].target = clamp((start - top) / Math.max(1, start - 80), 0, 1);
       });
     }
   };
 
   const apply = () => {
-    if (reduced.matches) return;
-    const isPinned = pinned();
-    // Start position: below the bottom of the stage (in the scaled coordinate space).
-    const drop = isPinned ? stage.clientHeight / fitScale : 0;
+    const drop = mode === 'pinned' ? stage.clientHeight : DESK_FROM.y; // pinned: start below the stage
     cards.forEach((card, i) => {
-      const k = 1 - easeOut(state[i].current); // 1 = start pose, 0 = in place
+      const k = mode === 'reduced' ? 0 : 1 - easeOut(state[i].current); // 1 = start pose, 0 = in place
       if (k < 0.0005) {
         card.style.transform = '';
         return;
       }
-      if (isPinned) {
-        const ry = Number(card.dataset.ry || 0);
+      if (mode === 'mobile') {
+        const f = MOBILE_FROM;
         card.style.transform =
-          `perspective(900px) translate3d(0, ${(drop * k).toFixed(1)}px, ${(-180 * k).toFixed(1)}px) ` +
-          `rotateX(${(58 * k).toFixed(2)}deg) rotateY(${(ry * k).toFixed(2)}deg) scale(${(1 - 0.18 * k).toFixed(4)})`;
-      } else {
-        card.style.transform =
-          `perspective(900px) translate3d(0, ${(MOBILE.y * k).toFixed(1)}px, ${(MOBILE.z * k).toFixed(1)}px) ` +
-          `rotateX(${(MOBILE.rx * k).toFixed(2)}deg) scale(${(1 - (1 - MOBILE.scale) * k).toFixed(4)})`;
+          `perspective(900px) translate3d(0, ${(f.y * k).toFixed(1)}px, ${(f.z * k).toFixed(1)}px) ` +
+          `rotateX(${(f.rx * k).toFixed(2)}deg) scale(${(1 - (1 - f.scale) * k).toFixed(4)})`;
+        return;
       }
+      const ry = Number(card.dataset.ry || 0);
+      card.style.transform =
+        `perspective(900px) translate3d(0, ${(drop * k).toFixed(1)}px, ${(DESK_FROM.z * k).toFixed(1)}px) ` +
+        `rotateX(${(DESK_FROM.rx * k).toFixed(2)}deg) rotateY(${(ry * k).toFixed(2)}deg) ` +
+        `scale(${(1 - (1 - DESK_FROM.scale) * k).toFixed(4)})`;
     });
   };
 
@@ -138,26 +128,15 @@ export function initPinCards() {
     if (!raf) last = 0;
   };
   const kick = () => {
-    if (!raf && visible) raf = requestAnimationFrame(tick);
-  };
-
-  const reset = () => {
-    cards.forEach((c) => {
-      c.style.transform = '';
-      c.style.transformOrigin = '';
-      c.style.willChange = '';
-    });
+    if (!raf && visible && mode !== 'reduced') raf = requestAnimationFrame(tick);
   };
 
   const relayout = () => {
     layout();
-    if (reduced.matches) {
-      reset();
-      return;
-    }
+    const animated = mode !== 'reduced';
     cards.forEach((c) => {
-      c.style.transformOrigin = '50% 100%';
-      c.style.willChange = 'transform';
+      c.style.transformOrigin = animated ? '50% 100%' : '';
+      c.style.willChange = animated ? 'transform' : '';
     });
     measure();
     state.forEach((s) => (s.current = s.target));
