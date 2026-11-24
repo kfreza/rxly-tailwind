@@ -184,14 +184,13 @@ The page is built and checked. See [PLAN.md](PLAN.md) for the phase checklist, s
 - **FAQ answers** come from the live site (Figma only shows the first answer).
 - **Bangla:** 107 strings reuse the official Rxly app translations (`design/i18n/bn-official.json`, read from the live app's Bangla locale); 62 page-specific strings were written for this page (`src/i18n/bn.manual.json`).
 - **"What it does" animations**: the 3 illustrations are animated SVGs supplied by the team (`public/images/scene-queue.svg`, `scene-page.svg`, `scene-brand.svg`), used unmodified as `<img>`.
-- **Globe video** in "Built for Bangladesh": Figma uses a video fill that the Figma API can't export. An animated SVG stand-in (`public/images/bd-globe.svg`) matches the frame.
+- **Globe video** in "Built for Bangladesh": Figma uses a video fill that the Figma API can't export. Done: rebuilt as an animated SVG, `public/images/bd-globe.svg`, from measurements of the original video (taken from the Figma prototype): grid rolls 0→36° per 5 s loop, orbit dot laps once (pale on the back half), cube bobs and rocks ±6°. Line weight matches the video within ~4%. All timings and colours are in its "Settings" block; reduced motion shows the first frame.
 - **Buttons** use Plus Jakarta Sans Medium (Figma uses Inter Medium for button labels only; unified to the brand font).
 - **Floating hero cards and the FAQ dome** use Figma's exact offsets from 1440px up, and smaller offsets between 1200 and 1439 so they aren't clipped.
 
 ### Needs review / confirmation
 | Item | Where | Note |
 |---|---|---|
-| Globe video file | `bangladesh.html`, `public/images/bd-globe.svg` | Send the original MP4/WebM to replace the stand-in |
 | App URLs | nav, hero, pricing, CTA | Currently `https://app.rxly.net/login` and `https://app.rxly.net/register?plan=…` |
 | Bangla, 62 strings | `src/i18n/bn.manual.json` | Headings re-ordered for Bangla word order; prices in Bangla numerals |
 | "How it works" demo copy | `how.html` | Figma placeholders kept as designed: `$80`, `care.clario.health/maya`, "Dr. Maya Khan", "Amelia Brown" |

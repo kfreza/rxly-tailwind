@@ -1,85 +1,95 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 306 306" fill="none">
-  <!-- Stand-in for the Figma video fill on Ellipse 10 (249:22196): wireframe globe, orbit and blue cube.
-       Geometry measured from the Figma render (306×306 frame, centre 153,153). The first frame matches
-       Figma; then the meridians turn continuously, the dot travels the orbit and the cube floats.
-       Replace with the original video when available (see docs/BRIEF.md). -->
+  <!-- Globe for "Built for Bangladesh" (Figma Ellipse 10, 249:22196). A code copy of the Figma video
+       fill, rebuilt from measurements of the video (5 s loop, 30 fps):
+         • globe grid  – outline r104, 2 pairs of meridians (0.40 r and 0.72 r wide), latitudes at 0 and ±30°;
+                         the whole grid rolls clockwise 0° → 36° over the 5 s loop, then starts again
+         • orbit       – dashed ellipse 146 × 62.2 (does not roll)
+         • orbit dot   – one lap per loop, clockwise from the right end; solid blue on the front half,
+                         pale on the back half; moves like a real circular orbit (slow at the ends)
+         • cube        – bobs ±8.3 twice per loop (its shadow shrinks as it rises) and rocks ±6° once per loop
+       All values to tweak are in the "Settings" block. -->
   <style>
-    .ln { stroke: #c9d6ec; stroke-width: 1; }
-    .lat { stroke: #dbe5f4; stroke-width: 1; }
-    .orbit { stroke: #a9c3ee; stroke-width: 1; stroke-dasharray: 3 4; }
-    .dot { transform: translate(299px, 153px); }
+    /* ── Settings ───────────────────────────────────────────── */
+    svg {
+      --loop: 5s;            /* one full cycle (dot lap, grid roll) */
+      --bob: 1.25s;          /* half a cube bob (2 bobs per loop) */
+    }
+    .rim   { stroke: #a7b8dc; stroke-width: 0.75; }
+    .mer   { stroke: #c3d0ea; stroke-width: 0.75; }
+    .lat   { stroke: #d2def0; stroke-width: 0.75; }
+    .orbit { stroke: #c4d0e6; stroke-width: 0.7; stroke-dasharray: 3.5 9; }
+    .dot   { fill: #3282fb; }   /* front half */
+    @keyframes dot-depth {     /* back half: pale */
+      0%, 49.99%   { fill: #3282fb; }
+      50%, 99.99%  { fill: #c7d9f7; }
+      100%         { fill: #3282fb; }
+    }
+    @keyframes roll { from { transform: rotate(0deg); } to { transform: rotate(36deg); } }
+    /* ─────────────────────────────────────────────────────── */
+
+    .grid { transform-box: view-box; transform-origin: 153px 153px; }
+    /* resting pose = the video's first frame: dot at the right end of the orbit */
+    .dot-x { transform: translateX(146px); }
+    .dot-y { transform: translateY(0); }
+
     @media (prefers-reduced-motion: no-preference) {
-      .mer { animation: turn 12s linear infinite; }
-      .mer.d0 { animation-delay: -0.75s; }
-      .mer.d1 { animation-delay: -2.25s; }
-      .mer.d2 { animation-delay: -3.75s; }
-      .mer.d3 { animation-delay: -5.25s; }
-      .mer.d4 { animation-delay: -6.75s; }
-      .mer.d5 { animation-delay: -8.25s; }
-      .mer.d6 { animation-delay: -9.75s; }
-      .mer.d7 { animation-delay: -11.25s; }
-      .cube { animation: bob 4s ease-in-out infinite; }
-      .shadow { animation: shade 4s ease-in-out infinite; transform-origin: 153px 186px; }
-      .dot { transform: none; offset-path: path('M299 153 A146 63 0 1 1 7 153 A146 63 0 1 1 299 153'); offset-rotate: 0deg; animation: orbit 12s linear infinite; }
+      .grid { animation: roll var(--loop) linear infinite; }
+      /* circular orbit seen at an angle: x = 146·cos, y = 62.2·sin (sine-eased back-and-forth on
+         each axis, y a quarter-cycle behind x) */
+      .dot-x { animation: dot-x calc(var(--loop) / 2) cubic-bezier(0.37, 0, 0.63, 1) infinite alternate; }
+      .dot-y { animation: dot-y calc(var(--loop) / 2) cubic-bezier(0.37, 0, 0.63, 1) calc(var(--loop) / -4) infinite alternate; }
+      .dot { animation: dot-depth var(--loop) linear infinite; }
+      /* cube: y = 0.8 + 8.3·sin, starting mid-way and heading down, as in the video */
+      .cube { animation: bob var(--bob) cubic-bezier(0.37, 0, 0.63, 1) calc(var(--bob) / -2) infinite alternate; }
+      .rock { animation: rock calc(var(--loop) / 2) cubic-bezier(0.37, 0, 0.63, 1) calc(var(--loop) / -4) infinite alternate; }
+      .shadow { animation: shade var(--bob) cubic-bezier(0.37, 0, 0.63, 1) calc(var(--bob) / -2) infinite alternate; }
     }
-    /* Continuous rotation, one direction only. Each meridian is the FRONT half of a longitude:
-       a right-half arc squashed by scaleX(sin λ). As λ goes −90° → +90° the arc travels from the
-       left edge, through the centre, to the right edge at constant speed (no slow-down at the edges); then it is round the back
-       (hidden) until it re-enters on the left edge — where it coincides with the outline, so no pop.
-       8 longitudes 45° apart (1.5s delays on a 12s turn) → 4 arcs on the front at any time. */
-    .mer { transform-box: view-box; transform-origin: 153px 153px; vector-effect: non-scaling-stroke; }
-    @keyframes turn {
-      0%     { transform: scaleX(-1); opacity: 1; animation-timing-function: linear; }
-      50%    { transform: scaleX(1);  opacity: 1; }
-      50.01% { transform: scaleX(1);  opacity: 0; }
-      99.99% { transform: scaleX(-1); opacity: 0; }
-      100%   { transform: scaleX(-1); opacity: 1; }
-    }
-    @keyframes bob { 50% { transform: translateY(-5px); } }
-    @keyframes shade { 50% { transform: scale(0.82); opacity: 0.6; } }
-    @keyframes orbit { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+    @keyframes dot-x { from { transform: translateX(146px); } to { transform: translateX(-146px); } }
+    @keyframes dot-y { from { transform: translateY(-62.2px); } to { transform: translateY(62.2px); } }
+    @keyframes rock { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+    @keyframes bob { from { transform: translateY(-8.3px); } to { transform: translateY(8.3px); } }
+    .shadow { transform-box: fill-box; transform-origin: center; }
+    @keyframes shade { from { transform: scale(0.78); opacity: 0.7; } to { transform: scale(1); opacity: 1; } }
   </style>
   <defs>
-    <linearGradient id="top" x1="131" y1="128" x2="175" y2="152" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#7fb2ff" /><stop offset="1" stop-color="#4d8dff" />
+    <linearGradient id="cube-top" x1="0" y1="-24.4" x2="0" y2="-0.4" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6aaeff" /><stop offset="1" stop-color="#559dfc" />
     </linearGradient>
-    <linearGradient id="left" x1="131" y1="140" x2="153" y2="178" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#3f82ff" /><stop offset="1" stop-color="#2468f5" />
+    <linearGradient id="cube-left" x1="0" y1="-12.4" x2="0" y2="24.4" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2369f1" /><stop offset="1" stop-color="#1b62ee" />
     </linearGradient>
-    <linearGradient id="right" x1="175" y1="140" x2="153" y2="178" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#2a6cf6" /><stop offset="1" stop-color="#1552d8" />
+    <linearGradient id="cube-right" x1="0" y1="-12.4" x2="0" y2="24.4" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3786fb" /><stop offset="1" stop-color="#2f7ef9" />
     </linearGradient>
   </defs>
 
   <circle cx="153" cy="153" r="153" fill="#fff" />
 
-  <!-- globe: outline, two meridians, two latitudes, equator -->
-  <circle class="ln" cx="153" cy="153" r="104" />
-  <!-- meridians: front-half arcs (static pose for reduced motion: λ = −67.5° … 67.5°) -->
-  <path class="ln mer d0" d="M153 49 A104 104 0 0 1 153 257" style="transform: scaleX(-0.924)" />
-  <path class="ln mer d1" d="M153 49 A104 104 0 0 1 153 257" style="transform: scaleX(-0.383)" />
-  <path class="ln mer d2" d="M153 49 A104 104 0 0 1 153 257" style="transform: scaleX(0.383)" />
-  <path class="ln mer d3" d="M153 49 A104 104 0 0 1 153 257" style="transform: scaleX(0.924)" />
-  <path class="ln mer d4" d="M153 49 A104 104 0 0 1 153 257" style="opacity: 0" />
-  <path class="ln mer d5" d="M153 49 A104 104 0 0 1 153 257" style="opacity: 0" />
-  <path class="ln mer d6" d="M153 49 A104 104 0 0 1 153 257" style="opacity: 0" />
-  <path class="ln mer d7" d="M153 49 A104 104 0 0 1 153 257" style="opacity: 0" />
-  <line class="lat" x1="63" y1="101" x2="243" y2="101" />
-  <line class="lat" x1="63" y1="205" x2="243" y2="205" />
-  <line class="lat" x1="49" y1="153" x2="257" y2="153" />
+  <!-- globe grid (rolls) -->
+  <g class="grid">
+    <ellipse class="mer" cx="153" cy="153" rx="41.6" ry="104" />
+    <ellipse class="mer" cx="153" cy="153" rx="74.9" ry="104" />
+    <line class="lat" x1="62.93" y1="101" x2="243.07" y2="101" />
+    <line class="lat" x1="49" y1="153" x2="257" y2="153" />
+    <line class="lat" x1="62.93" y1="205" x2="243.07" y2="205" />
+    <circle class="rim" cx="153" cy="153" r="104" />
+  </g>
 
-  <!-- dashed orbit + travelling dot (starts at the right end, as in Figma) -->
-  <ellipse class="orbit" cx="153" cy="153" rx="146" ry="63" />
-  <circle class="dot" cx="0" cy="0" r="3.5" fill="#2f6ff5" />
+  <!-- orbit + dot -->
+  <ellipse class="orbit" cx="153" cy="153" rx="146" ry="62.2" />
+  <g transform="translate(153 153)">
+    <g class="dot-x"><g class="dot-y"><circle class="dot" r="2.8" /></g></g>
+  </g>
 
-  <!-- cube shadow -->
-  <ellipse class="shadow" cx="153" cy="186" rx="17" ry="4.5" fill="#dcdcdc" />
-
-  <!-- cube (≈43px wide, centred on the globe) -->
-  <g class="cube">
-    <path d="M153 128 L174.5 140 L153 152 L131.5 140 Z" fill="url(#top)" />
-    <path d="M131.5 140 L153 152 L153 178 L131.5 166 Z" fill="url(#left)" />
-    <path d="M174.5 140 L153 152 L153 178 L174.5 166 Z" fill="url(#right)" />
-    <path d="M146 135.5 L156.5 129.6 L161 132.2 L150.5 138.1 Z" fill="#fff" opacity="0.35" />
+  <!-- cube shadow + cube (isometric cube, edge 30, viewed 35° from above; centre on the globe centre) -->
+  <g transform="translate(153 153)">
+    <ellipse class="shadow" cx="0" cy="32.5" rx="13.5" ry="4.4" fill="#e5e5e5" />
+    <g class="cube"><g class="rock">
+      <path d="M0 -24.4 L21.2 -12.4 L0 -0.4 L-21.2 -12.4 Z" fill="url(#cube-top)" />
+      <path d="M-21.2 -12.4 L0 -0.4 L0 24.4 L-21.2 12.4 Z" fill="url(#cube-left)" />
+      <path d="M21.2 -12.4 L0 -0.4 L0 24.4 L21.2 12.4 Z" fill="url(#cube-right)" />
+      <!-- highlight panel on the top face (parallel to the back-left edge) -->
+      <path d="M-6.4 -10 L4.2 -16 L-1.1 -19 L-11.7 -13 Z" fill="#fff" opacity="0.3" />
+    </g></g>
   </g>
 </svg>
