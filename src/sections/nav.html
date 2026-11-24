@@ -15,8 +15,8 @@
     </ul>
 
     <div class="flex items-center gap-1 desk:gap-0">
-      <button type="button" data-lang-toggle class="nav-link hidden items-center gap-2.5 md:inline-flex">
-        <img src="/images/icon-globe.svg" alt="" width="15" height="15" class="size-[15px]" />
+      <button type="button" data-lang-toggle class="nav-link icon-btn hidden items-center gap-2.5 md:inline-flex">
+        <svg class="size-[15px] shrink-0" viewBox="0 0 15.3333 15.3333" fill="currentColor" aria-hidden="true" focusable="false"><path d="M7.66667 14.3333C3.98477 14.3333 1 11.3485 1 7.66667C1 3.98477 3.98477 1 7.66667 1C11.3485 1 14.3333 3.98477 14.3333 7.66667C14.3333 11.3485 11.3485 14.3333 7.66667 14.3333ZM6.14001 12.7783C5.49829 11.4173 5.10488 9.91613 5.01821 8.33333H2.37459C2.63867 10.451 4.14426 12.1831 6.14001 12.7783ZM6.3538 8.33333C6.45407 9.9592 6.91853 11.4865 7.66667 12.8347C8.4148 11.4865 8.87927 9.9592 8.97953 8.33333H6.3538ZM12.9587 8.33333H10.3151C10.2285 9.91613 9.83507 11.4173 9.19333 12.7783C11.1891 12.1831 12.6947 10.451 12.9587 8.33333ZM2.37459 7H5.01821C5.10488 5.41718 5.49829 3.91605 6.14001 2.55504C4.14426 3.15022 2.63867 4.88233 2.37459 7ZM6.3538 7H8.97953C8.87927 5.37415 8.4148 3.84683 7.66667 2.49866C6.91853 3.84683 6.45407 5.37415 6.3538 7ZM9.19333 2.55504C9.83507 3.91605 10.2285 5.41718 10.3151 7H12.9587C12.6947 4.88233 11.1891 3.15022 9.19333 2.55504Z" /></svg>
         <span class="sr-only" data-i18n="nav.language">Language:</span> <span data-lang-label>English</span>
       </button>
       <a href="https://app.rxly.net/login" class="nav-link hidden md:inline-flex" data-i18n="nav.login">Log in</a>
@@ -26,7 +26,7 @@
       </a>
 
       <!-- Mobile menu button -->
-      <button type="button" data-menu-open class="ml-1 inline-flex size-11 items-center justify-center rounded-lg text-ink desk:hidden" aria-controls="mobile-menu" aria-expanded="false" aria-label="Open menu">
+      <button type="button" data-menu-open class="icon-btn ml-1 inline-flex size-11 items-center justify-center rounded-lg text-ink desk:hidden" aria-controls="mobile-menu" aria-expanded="false" aria-label="Open menu">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
       </button>
     </div>
@@ -38,7 +38,7 @@
     <div role="dialog" aria-modal="true" aria-label="Menu" class="absolute inset-y-0 right-0 flex w-[min(340px,88vw)] flex-col gap-2 bg-white p-6 shadow-2xl">
       <div class="mb-4 flex items-center justify-between">
         <img src="/images/logo.svg" alt="Rxly" width="77" height="40" class="h-8 w-auto" />
-        <button type="button" data-menu-close class="inline-flex size-11 items-center justify-center rounded-lg text-ink" aria-label="Close menu">
+        <button type="button" data-menu-close class="icon-btn inline-flex size-11 items-center justify-center rounded-lg text-ink" aria-label="Close menu">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
         </button>
       </div>
@@ -49,7 +49,7 @@
       <a href="#faq" data-menu-link class="mobile-link" data-i18n="nav.faq">FAQ</a>
       <hr class="my-3 border-line" />
       <button type="button" data-lang-toggle class="mobile-link inline-flex items-center gap-3 text-left">
-        <img src="/images/icon-globe.svg" alt="" width="16" height="16" class="size-4" />
+        <svg class="size-4 shrink-0" viewBox="0 0 15.3333 15.3333" fill="currentColor" aria-hidden="true" focusable="false"><path d="M7.66667 14.3333C3.98477 14.3333 1 11.3485 1 7.66667C1 3.98477 3.98477 1 7.66667 1C11.3485 1 14.3333 3.98477 14.3333 7.66667C14.3333 11.3485 11.3485 14.3333 7.66667 14.3333ZM6.14001 12.7783C5.49829 11.4173 5.10488 9.91613 5.01821 8.33333H2.37459C2.63867 10.451 4.14426 12.1831 6.14001 12.7783ZM6.3538 8.33333C6.45407 9.9592 6.91853 11.4865 7.66667 12.8347C8.4148 11.4865 8.87927 9.9592 8.97953 8.33333H6.3538ZM12.9587 8.33333H10.3151C10.2285 9.91613 9.83507 11.4173 9.19333 12.7783C11.1891 12.1831 12.6947 10.451 12.9587 8.33333ZM2.37459 7H5.01821C5.10488 5.41718 5.49829 3.91605 6.14001 2.55504C4.14426 3.15022 2.63867 4.88233 2.37459 7ZM6.3538 7H8.97953C8.87927 5.37415 8.4148 3.84683 7.66667 2.49866C6.91853 3.84683 6.45407 5.37415 6.3538 7ZM9.19333 2.55504C9.83507 3.91605 10.2285 5.41718 10.3151 7H12.9587C12.6947 4.88233 11.1891 3.15022 9.19333 2.55504Z" /></svg>
         <span class="sr-only" data-i18n="nav.language">Language:</span> <span data-lang-label>English</span>
       </button>
       <a href="https://app.rxly.net/login" class="mobile-link" data-i18n="nav.login">Log in</a>

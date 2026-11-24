@@ -14,21 +14,117 @@
 @layer components {
   /* Buttons — Figma: 16px medium, px 22 / py 11, radius 8 */
   .btn {
-    @apply inline-flex items-center justify-center gap-2.5 rounded-lg px-[22px] py-[11px] text-base leading-[27px] font-medium whitespace-nowrap transition-colors duration-200;
-  }
-  /* Use together: class="btn btn-primary" */
-  .btn-primary {
-    @apply bg-primary text-white hover:bg-primary-dark;
-  }
-  .btn-outline {
-    /* Figma strokes sit inside the 49px button: shave the border off the padding */
-    @apply border border-primary py-[10px] text-primary hover:bg-primary/5;
-  }
-  .btn-dark {
-    @apply bg-ink text-white hover:bg-black;
+    @apply relative isolate inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-lg px-[22px] py-[11px] text-base leading-[27px] font-medium whitespace-nowrap;
+    transition:
+      background-color 0.2s,
+      color 0.25s,
+      box-shadow 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+      transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+      background-size 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
   .btn > img {
     @apply size-4 shrink-0;
+  }
+
+  /* Hover effects (approved demo: https://claude.ai/artifact/AjtrzY8TcYdcmJ9JFsEgZQ).
+     Each also applies on keyboard focus. */
+
+  /* Primary — "shine": darker blue, a light sweep crosses the button, the arrow slides out and back in */
+  .btn-primary {
+    @apply bg-primary text-white;
+  }
+  .btn-primary::after,
+  .btn-dark::after {
+    content: '';
+    @apply pointer-events-none absolute inset-0 -z-10;
+    background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.35) 50%, transparent 70%);
+    translate: -120% 0;
+  }
+  .btn-primary:is(:hover, :focus-visible) {
+    @apply bg-primary-dark;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    :is(.btn-primary, .btn-dark):is(:hover, :focus-visible)::after {
+      translate: 120% 0;
+      transition: translate 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    :is(.btn-primary, .btn-dark):is(:hover, :focus-visible) > img {
+      animation: btn-arrow 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+  }
+  @keyframes btn-arrow {
+    45% {
+      translate: 14px 0;
+      opacity: 0;
+    }
+    46% {
+      translate: -14px 0;
+      opacity: 0;
+    }
+  }
+
+  /* Outline — "fill": blue fills in from the left and the text turns white; on leaving it carries on
+     out to the right (the fill is anchored right at rest, left while hovered) */
+  .btn-outline {
+    /* Figma strokes sit inside the 49px button: shave the border off the padding */
+    @apply border border-primary py-[10px] text-primary;
+    background: linear-gradient(var(--color-primary), var(--color-primary)) no-repeat right / 0% 100%;
+  }
+  .btn-outline:is(:hover, :focus-visible) {
+    @apply text-white;
+    background-position: left;
+    background-size: 100% 100%;
+  }
+  .btn-outline > img {
+    transition: filter 0.25s;
+  }
+  .btn-outline:is(:hover, :focus-visible) > img {
+    filter: brightness(0) invert(1); /* blue icon turns white with the text */
+  }
+
+  /* Dark (Solo / Hospital plans) — turns accent blue while its plan card is hovered; hovering the
+     button itself does exactly what the Clinic (primary) button does: darker blue + shine + arrow */
+  .btn-dark {
+    @apply bg-ink text-white;
+  }
+  .plan:hover .btn-dark {
+    @apply bg-primary;
+  }
+  .plan .btn-dark:is(:hover, :focus-visible) {
+    @apply bg-primary-dark;
+  }
+
+  /* CTA on the blue panel — "halo": rises with a soft white ring (overrides the primary shine) */
+  .btn-cta::after {
+    content: none;
+  }
+  .js .reveal.btn-cta,
+  .btn-cta {
+    /* keeps the scroll-in fade (opacity, translate) and adds the halo's own easing */
+    transition:
+      opacity 0.7s ease-out,
+      translate 0.7s ease-out,
+      background-color 0.25s,
+      box-shadow 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+      transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .btn-cta:is(:hover, :focus-visible) {
+    @apply bg-primary;
+    box-shadow:
+      0 0 0 4px rgb(255 255 255 / 0.25),
+      0 10px 24px -8px rgb(0 0 0 / 0.35);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .btn-cta:is(:hover, :focus-visible) {
+      transform: translateY(-1px);
+    }
+    .btn-cta:is(:hover, :focus-visible) > img {
+      animation: none;
+      translate: 3px 0;
+    }
+    .btn-cta > img {
+      transition: translate 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
   }
 
   /* Section label pill — Figma 249:22466 */
@@ -81,8 +177,54 @@
   }
 
   /* Nav links — Figma 249:22444: 16px regular, px 14 / py 8, pill radius */
+  /* Header: a 2px blue line grows from the centre under the word on hover, and stays under the
+     link of the section you are in (js/nav.js sets aria-current) */
   .nav-link {
-    @apply items-center rounded-full px-3.5 py-2 text-base leading-5 text-body transition-colors hover:bg-soft hover:text-ink;
+    @apply relative items-center rounded-full px-3.5 py-2 text-base leading-5 text-body transition-colors;
+  }
+  .nav-link::after {
+    content: '';
+    @apply pointer-events-none absolute inset-x-3.5 bottom-0.5 h-0.5 scale-x-0 rounded-full bg-primary;
+    transition: scale 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .nav-link:is(:hover, :focus-visible, [aria-current='true']) {
+    @apply text-ink;
+  }
+  .nav-link:is(:hover, :focus-visible, [aria-current='true'])::after {
+    @apply scale-x-100;
+  }
+  /* Footer menu: plain text links; hover darkens the text and shows a blue underline */
+  .nav-link--plain::after {
+    content: none;
+  }
+  .nav-link--plain {
+    @apply underline decoration-transparent decoration-1 underline-offset-4;
+    transition:
+      color 0.2s,
+      text-decoration-color 0.2s;
+  }
+  .nav-link--plain:is(:hover, :focus-visible) {
+    @apply text-ink decoration-primary;
+  }
+  /* Language switch + icon buttons: pale blue, blue text; the globe turns half a spin */
+  .icon-btn {
+    @apply transition-[background-color,color,scale] duration-200;
+  }
+  .icon-btn::after {
+    content: none;
+  }
+  .icon-btn:is(:hover, :focus-visible) {
+    @apply bg-tint text-primary;
+  }
+  .icon-btn:active {
+    scale: 0.94;
+  }
+  /* the globe is inline SVG in currentColor, so it turns blue with the text and spins */
+  .icon-btn > :is(img, svg) {
+    transition: rotate 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .icon-btn[data-lang-toggle]:is(:hover, :focus-visible) > svg {
+    rotate: 180deg;
   }
   .mobile-link {
     @apply rounded-lg px-3 py-3 text-lg font-medium text-ink hover:bg-soft;
@@ -118,7 +260,11 @@
 
   /* Screens section — Figma 249:22523 tabs, 301:4939 copy card, 301:4938 browser */
   .screen-tab {
-    @apply flex h-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-soft px-[17px] text-base leading-[27px] font-medium whitespace-nowrap text-body transition-colors duration-300 hover:text-ink aria-selected:bg-primary aria-selected:text-white;
+    @apply flex h-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-soft px-[17px] text-base leading-[27px] font-medium whitespace-nowrap text-body transition-[color,background-color,box-shadow] duration-300 aria-selected:bg-primary aria-selected:text-white;
+  }
+  /* hover (unselected tab): pale blue with a thin blue ring, previewing the selected state */
+  .screen-tab:not([aria-selected='true']):is(:hover, :focus-visible) {
+    @apply bg-tint text-primary shadow-[inset_0_0_0_1px_rgb(6_106_254/0.25)];
   }
   /* The label sits above the sliding pill; the tab's grey chip stays below it */
   .screen-tab > span {
@@ -140,7 +286,10 @@
   }
   /* label colour changes in step with the pill arriving / leaving */
   .has-pill .screen-tab {
-    transition: color 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+    transition:
+      color 0.45s cubic-bezier(0.65, 0, 0.35, 1),
+      background-color 0.3s,
+      box-shadow 0.3s;
   }
   .has-pill.no-anim .screen-tab {
     transition: none;
@@ -149,14 +298,24 @@
     transition: none;
   }
   /* Panel switch: the frame eases to the new height (js/tabs.js); the new panel's parts fade up in turn */
-  .screen-panel.is-entering :is(.screen-panel__name, .screen-copy, .screen-browser) {
+  .screen-panel.is-entering :is(.screen-panel__name, .screen-copy, .screen-browser, .screen-phones) {
     animation: tab-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   }
   .screen-panel.is-entering .screen-copy {
     animation-delay: 0.06s;
   }
-  .screen-panel.is-entering .screen-browser {
+  .screen-panel.is-entering :is(.screen-browser, .screen-phones) {
     animation-delay: 0.12s;
+  }
+  /* Patient's phone: the two phones arrive one after the other inside their box */
+  .screen-panel.is-entering .screen-phones > img {
+    animation: tab-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  .screen-panel.is-entering .screen-phones > img:first-child {
+    animation-delay: 0.2s;
+  }
+  .screen-panel.is-entering .screen-phones > img:last-child {
+    animation-delay: 0.28s;
   }
   @keyframes tab-in {
     from {
@@ -266,6 +425,10 @@
   .billing-btn {
     @apply inline-flex h-10 cursor-pointer items-center rounded-full px-[17px] text-base leading-[27px] font-medium text-ink transition-colors aria-pressed:bg-primary aria-pressed:text-soft;
   }
+  /* hover (option not selected): text turns accent blue */
+  .billing-btn:not([aria-pressed='true']):is(:hover, :focus-visible) {
+    @apply text-primary;
+  }
   /* Figma 249:22430: "Yearly" sits 20px after Monthly, badge 5px after the word, flush right */
   /* Figma 249:22428 / 249:22432: pill 96×40, Yearly area 150 wide, badge 79×20 */
   .billing-btn--monthly {
@@ -370,7 +533,23 @@
     @apply desk:pb-0;
   }
   .faq-icon {
-    @apply flex size-[35px] shrink-0 items-center justify-center rounded-full bg-[#f2f1f3] transition-transform duration-300 ease-out;
+    @apply flex size-[35px] shrink-0 items-center justify-center rounded-full bg-[#f2f1f3] transition-[rotate,background-color] duration-300 ease-out;
+  }
+  /* hover: question turns accent blue; the icon becomes a solid blue circle with a white sign */
+  .faq-q {
+    @apply transition-[padding,color];
+  }
+  .faq-q:is(:hover, :focus-visible) {
+    @apply text-primary;
+  }
+  /* colour only (no scale or filter), so the icon never moves by a pixel; the sign is inline SVG
+     in currentColor */
+  .faq-icon {
+    @apply text-ink;
+    transition-property: rotate, background-color, color;
+  }
+  .faq-q:is(:hover, :focus-visible) .faq-icon {
+    @apply bg-primary text-white;
   }
   .faq-item[data-open] .faq-icon {
     @apply rotate-45;
