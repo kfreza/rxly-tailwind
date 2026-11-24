@@ -118,7 +118,51 @@
 
   /* Screens section — Figma 249:22523 tabs, 301:4939 copy card, 301:4938 browser */
   .screen-tab {
-    @apply flex h-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-soft px-[17px] text-base leading-[27px] font-medium whitespace-nowrap text-body transition-colors hover:text-ink aria-selected:bg-primary aria-selected:text-white;
+    @apply flex h-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-soft px-[17px] text-base leading-[27px] font-medium whitespace-nowrap text-body transition-colors duration-300 hover:text-ink aria-selected:bg-primary aria-selected:text-white;
+  }
+  /* The label sits above the sliding pill; the tab's grey chip stays below it */
+  .screen-tab > span {
+    @apply relative z-[1];
+  }
+  /* Sliding blue pill (js/tabs.js sets its x and width). Once it's ready the selected tab drops its
+     own blue so the pill is what you see moving between tabs. */
+  .tab-pill {
+    @apply pointer-events-none absolute top-1 left-0 z-0 h-10 rounded-full bg-primary opacity-0;
+    transition:
+      translate 0.45s cubic-bezier(0.65, 0, 0.35, 1),
+      width 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  .has-pill .tab-pill {
+    @apply opacity-100;
+  }
+  .has-pill .screen-tab[aria-selected='true'] {
+    @apply bg-soft;
+  }
+  /* label colour changes in step with the pill arriving / leaving */
+  .has-pill .screen-tab {
+    transition: color 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  .has-pill.no-anim .screen-tab {
+    transition: none;
+  }
+  .no-anim .tab-pill {
+    transition: none;
+  }
+  /* Panel switch: the frame eases to the new height (js/tabs.js); the new panel's parts fade up in turn */
+  .screen-panel.is-entering :is(.screen-panel__name, .screen-copy, .screen-browser) {
+    animation: tab-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  .screen-panel.is-entering .screen-copy {
+    animation-delay: 0.06s;
+  }
+  .screen-panel.is-entering .screen-browser {
+    animation-delay: 0.12s;
+  }
+  @keyframes tab-in {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
   }
   .screen-panel__name {
     @apply text-[28px] leading-tight font-bold text-ink md:text-[40px] desk:text-[48px] desk:leading-[50px];

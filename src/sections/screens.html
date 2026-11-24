@@ -15,16 +15,17 @@
     <div data-tabs class="mt-8">
       <!-- Tabs (249:22523) -->
       <div data-tabs-scroll class="relative -mx-5 overflow-x-auto px-5 [scrollbar-width:none] md:mx-0 md:px-0">
-        <div role="tablist" aria-label="Rxly screens" class="mx-auto flex w-max gap-[5px] rounded-full border border-line bg-white p-1">
-          <button type="button" role="tab" id="tab-desk" aria-controls="panel-desk" aria-selected="true" class="screen-tab" data-i18n="screens.tab_desk">Front desk</button>
-          <button type="button" role="tab" id="tab-room" aria-controls="panel-room" aria-selected="false" class="screen-tab" data-i18n="screens.tab_room">Doctor's room</button>
-          <button type="button" role="tab" id="tab-pad" aria-controls="panel-pad" aria-selected="false" class="screen-tab" data-i18n="screens.tab_pad">Prescription pad</button>
-          <button type="button" role="tab" id="tab-phone" aria-controls="panel-phone" aria-selected="false" class="screen-tab" data-i18n="screens.tab_phone">Patient's phone</button>
+        <div role="tablist" aria-label="Rxly screens" class="relative mx-auto flex w-max gap-[5px] rounded-full border border-line bg-white p-1">
+          <span class="tab-pill" aria-hidden="true" data-tab-pill></span>
+          <button type="button" role="tab" id="tab-desk" aria-controls="panel-desk" aria-selected="true" class="screen-tab"><span data-i18n="screens.tab_desk">Front desk</span></button>
+          <button type="button" role="tab" id="tab-room" aria-controls="panel-room" aria-selected="false" class="screen-tab"><span data-i18n="screens.tab_room">Doctor's room</span></button>
+          <button type="button" role="tab" id="tab-pad" aria-controls="panel-pad" aria-selected="false" class="screen-tab"><span data-i18n="screens.tab_pad">Prescription pad</span></button>
+          <button type="button" role="tab" id="tab-phone" aria-controls="panel-phone" aria-selected="false" class="screen-tab"><span data-i18n="screens.tab_phone">Patient's phone</span></button>
         </div>
       </div>
 
       <!-- Panel frame (301:4937) -->
-      <div class="reveal relative isolate mt-6 overflow-hidden rounded-[20px] bg-white p-4 md:p-6 desk:px-8 desk:pt-6 desk:pb-6">
+      <div data-tab-frame class="reveal relative isolate mt-6 overflow-hidden rounded-[20px] bg-white p-4 md:p-6 desk:px-8 desk:pt-6 desk:pb-6">
         <img src="/images/screens-panel-bg.webp" alt="" class="pointer-events-none absolute inset-0 -z-10 size-full object-cover" loading="lazy" />
 
         <!-- Front desk -->
