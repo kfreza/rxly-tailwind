@@ -2,7 +2,7 @@
   <!-- Globe for "Built for Bangladesh" (Figma Ellipse 10, 249:22196). A code copy of the Figma video
        fill, rebuilt from measurements of the video (5 s loop, 30 fps):
          • globe grid  – outline r104, 2 pairs of meridians (0.40 r and 0.72 r wide), latitudes at 0 and ±30°;
-                         the whole grid rolls clockwise 0° → 36° over the 5 s loop, then starts again
+                         the whole grid turns clockwise without stopping, at the video speed (36° per 5 s)
          • orbit       – dashed ellipse 146 × 62.2 (does not roll)
          • orbit dot   – one lap per loop, clockwise from the right end; solid blue on the front half,
                          pale on the back half; moves like a real circular orbit (slow at the ends)
@@ -13,6 +13,7 @@
     svg {
       --loop: 5s;            /* one full cycle (dot lap, grid roll) */
       --bob: 1.25s;          /* half a cube bob (2 bobs per loop) */
+      --turn: 50s;           /* one full turn of the grid (video speed: 36° per 5 s); never stops */
     }
     .rim   { stroke: #a7b8dc; stroke-width: 0.75; }
     .mer   { stroke: #c3d0ea; stroke-width: 0.75; }
@@ -24,7 +25,7 @@
       50%, 99.99%  { fill: #c7d9f7; }
       100%         { fill: #3282fb; }
     }
-    @keyframes roll { from { transform: rotate(0deg); } to { transform: rotate(36deg); } }
+    @keyframes roll { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     /* ─────────────────────────────────────────────────────── */
 
     .grid { transform-box: view-box; transform-origin: 153px 153px; }
@@ -33,7 +34,7 @@
     .dot-y { transform: translateY(0); }
 
     @media (prefers-reduced-motion: no-preference) {
-      .grid { animation: roll var(--loop) linear infinite; }
+      .grid { animation: roll var(--turn) linear infinite; }
       /* circular orbit seen at an angle: x = 146·cos, y = 62.2·sin (sine-eased back-and-forth on
          each axis, y a quarter-cycle behind x) */
       .dot-x { animation: dot-x calc(var(--loop) / 2) cubic-bezier(0.37, 0, 0.63, 1) infinite alternate; }
