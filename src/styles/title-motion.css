@@ -1,0 +1,242 @@
+/* Section title entrances (js/title-motion.js). Each [data-title-anim] title plays once as it
+   scrolls into view (the hero on page load), then ends with its blue word's underline drawing in
+   left → right. Approved draft: https://claude.ai/artifact/9zGXSS5L9dAfvB8Yz7LkpW
+
+   rise     hero         words rise from behind a mask
+   blur     what it does words sharpen from a blur; highlight slides in from the right
+   wipe     screens      first part drops in; highlight is wiped on left → right
+   wave     how it works letters rise in a wave (words in Bangla); highlight sweeps dark → blue
+   converge bangladesh   line 1 from the left, line 2 from the right
+   flip     pricing      words flip up from a 3D tilt
+   lines    faq          title rises from below its baseline; slower pen-stroke underline
+   track    cta          wide letter spacing tightens into place                                  */
+
+/* Structure helpers (always on; they don't change the resting look) */
+/* Inline underline SVGs: don't clip the round stroke caps at the edges */
+[data-title-anim] svg {
+  overflow: visible;
+}
+.tm-line {
+  display: block;
+}
+.tm-lead {
+  display: inline-block;
+}
+.tm-w,
+.tm-c {
+  display: inline-block;
+}
+/* Mask for the hero / FAQ rise: padded so tall glyphs and descenders aren't clipped */
+.tm-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-block: 0.1em 0.14em;
+  margin-block: -0.1em -0.14em;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Waiting to play: hidden, so it doesn't flash in its final state first */
+  .js [data-title-anim]:not(.tm-play) {
+    opacity: 0;
+  }
+
+  /* Shared: the underline is drawn like a pen stroke along its own path (right along the top
+     curve, then the hook back to the left), after the words land */
+  .tm-play svg path {
+    stroke-dasharray: 1;
+    animation: tm-draw 0.7s cubic-bezier(0.65, 0, 0.35, 1) var(--tm-draw, 0.6s) both;
+  }
+  @keyframes tm-draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* 1 · rise */
+  [data-title-anim='rise'] {
+    --tm-draw: 0.75s;
+  }
+  .tm-play[data-title-anim='rise'] .tm-w {
+    animation: tm-rise 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i) * 70ms);
+  }
+  @keyframes tm-rise {
+    from {
+      transform: translateY(115%);
+    }
+  }
+
+  /* 2 · blur */
+  [data-title-anim='blur'] {
+    --tm-draw: 1s;
+  }
+  .tm-play[data-title-anim='blur'] .tm-w {
+    animation: tm-blur 0.7s ease-out both;
+    animation-delay: calc(var(--i) * 60ms);
+  }
+  .tm-play[data-title-anim='blur'] .mark {
+    animation: tm-slide-r 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.45s both;
+  }
+  @keyframes tm-blur {
+    from {
+      opacity: 0;
+      filter: blur(10px);
+      transform: translateY(6px);
+    }
+  }
+  @keyframes tm-slide-r {
+    from {
+      opacity: 0;
+      transform: translateX(48px);
+    }
+  }
+
+  /* 3 · wipe */
+  [data-title-anim='wipe'] {
+    --tm-draw: 1.05s;
+  }
+  .tm-play[data-title-anim='wipe'] .tm-lead {
+    animation: tm-drop 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  .tm-play[data-title-anim='wipe'] .mark {
+    animation: tm-wipe 0.8s cubic-bezier(0.65, 0, 0.35, 1) 0.35s both;
+  }
+  @keyframes tm-drop {
+    from {
+      opacity: 0;
+      transform: translateY(-24px);
+    }
+  }
+  @keyframes tm-wipe {
+    from {
+      clip-path: inset(-20% 100% -40% 0);
+    }
+    to {
+      clip-path: inset(-20% 0 -40% 0);
+    }
+  }
+
+  /* 4 · wave + dusk sweep on the highlight */
+  [data-title-anim='wave'] {
+    --tm-draw: 1.2s;
+  }
+  .tm-play[data-title-anim='wave'] .tm-c,
+  .tm-play[data-title-anim='wave'] .tm-w {
+    animation: tm-wave 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i) * 28ms);
+  }
+  .tm-play[data-title-anim='wave'] .mark > [data-i18n] {
+    background: linear-gradient(90deg, var(--color-primary) 0 45%, var(--color-ink) 55% 100%);
+    background-size: 230% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: tm-dusk 0.9s ease-in-out 0.45s forwards;
+  }
+  @keyframes tm-wave {
+    from {
+      opacity: 0;
+      transform: translateY(0.55em);
+    }
+  }
+  @keyframes tm-dusk {
+    to {
+      background-position: 0 0;
+    }
+  }
+
+  /* 5 · converge */
+  [data-title-anim='converge'] {
+    --tm-draw: 0.85s;
+  }
+  .tm-play[data-title-anim='converge'] .tm-line:first-child {
+    animation: tm-from-l 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  .tm-play[data-title-anim='converge'] .tm-line:last-child {
+    animation: tm-from-r 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.12s both;
+  }
+  @keyframes tm-from-l {
+    from {
+      opacity: 0;
+      transform: translateX(-90px);
+    }
+  }
+  @keyframes tm-from-r {
+    from {
+      opacity: 0;
+      transform: translateX(90px);
+    }
+  }
+
+  /* 6 · flip */
+  [data-title-anim='flip'] {
+    --tm-draw: 0.75s;
+    perspective: 700px;
+  }
+  .tm-play[data-title-anim='flip'] .tm-w,
+  .tm-play[data-title-anim='flip'] .mark {
+    transform-origin: 50% 100%;
+    animation: tm-flip 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i) * 65ms);
+  }
+  @keyframes tm-flip {
+    from {
+      opacity: 0;
+      transform: rotateX(-80deg) translateY(12px);
+    }
+  }
+
+  /* 7 · lines + pen-stroke underline */
+  [data-title-anim='lines'] {
+    --tm-draw: 0.55s;
+  }
+  .tm-play[data-title-anim='lines'] .tm-mask > .tm-in {
+    display: inline-block;
+    animation: tm-rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  .tm-play[data-title-anim='lines'] svg path {
+    animation-duration: 1.1s;
+    animation-timing-function: cubic-bezier(0.3, 0.6, 0.3, 1);
+  }
+
+  /* 8 · track */
+  [data-title-anim='track'] {
+    --tm-draw: 1.05s;
+  }
+  .tm-play[data-title-anim='track'] .tm-line {
+    animation: tm-track 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  .tm-play[data-title-anim='track'] .tm-line:last-child {
+    animation-delay: 0.12s;
+  }
+  @keyframes tm-track {
+    from {
+      opacity: 0;
+      letter-spacing: 0.32em;
+      filter: blur(6px);
+    }
+  }
+
+  /* Finished: hand the title back to normal rendering. Dropping every animation (and the
+     dusk gradient) removes the leftover GPU layers / background-clip text, so the words and
+     the vector underline render as sharp as static text. */
+  .tm-done,
+  .tm-done * {
+    animation: none !important;
+  }
+  .tm-done .mark > [data-i18n] {
+    background: none !important;
+    color: inherit !important;
+  }
+  .tm-done svg path {
+    stroke-dasharray: none !important;
+  }
+  .tm-done[data-title-anim='flip'] {
+    perspective: none;
+  }
+}

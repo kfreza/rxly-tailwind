@@ -43,8 +43,9 @@
   .mark {
     @apply relative inline-block font-medium whitespace-nowrap text-primary;
   }
-  .mark > img {
-    @apply pointer-events-none absolute right-0 -bottom-[0.12em] left-0 h-[0.14em] w-full select-none;
+  .mark > img,
+  .mark > svg {
+    @apply pointer-events-none absolute top-[calc(100%-0.02em)] right-0 left-0 h-auto w-full select-none;
   }
   .section-lead {
     @apply text-base leading-[27px] text-body md:text-lg;
