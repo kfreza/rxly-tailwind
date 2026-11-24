@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 306 306" fill="none">
   <!-- Stand-in for the Figma video fill on Ellipse 10 (249:22196): wireframe globe, orbit and blue cube.
        Geometry measured from the Figma render (306×306 frame, centre 153,153). The first frame matches
-       Figma; then the meridians turn, the dot travels the orbit and the cube floats.
+       Figma; then the meridians turn continuously, the dot travels the orbit and the cube floats.
        Replace with the original video when available (see docs/BRIEF.md). -->
   <style>
     .ln { stroke: #c9d6ec; stroke-width: 1; }
@@ -9,15 +9,32 @@
     .orbit { stroke: #a9c3ee; stroke-width: 1; stroke-dasharray: 3 4; }
     .dot { transform: translate(299px, 153px); }
     @media (prefers-reduced-motion: no-preference) {
-      .m1 { animation: m1 10s linear infinite; }
-      .m2 { animation: m2 10s linear infinite; }
+      .mer { animation: turn 12s linear infinite; }
+      .mer.d0 { animation-delay: -0.75s; }
+      .mer.d1 { animation-delay: -2.25s; }
+      .mer.d2 { animation-delay: -3.75s; }
+      .mer.d3 { animation-delay: -5.25s; }
+      .mer.d4 { animation-delay: -6.75s; }
+      .mer.d5 { animation-delay: -8.25s; }
+      .mer.d6 { animation-delay: -9.75s; }
+      .mer.d7 { animation-delay: -11.25s; }
       .cube { animation: bob 4s ease-in-out infinite; }
       .shadow { animation: shade 4s ease-in-out infinite; transform-origin: 153px 186px; }
       .dot { transform: none; offset-path: path('M299 153 A146 63 0 1 1 7 153 A146 63 0 1 1 299 153'); offset-rotate: 0deg; animation: orbit 12s linear infinite; }
     }
-    /* meridians sweep across the sphere (rx 75 → 0 → 104 …), starting at Figma's frame */
-    @keyframes m1 { 0% { rx: 75px; } 35% { rx: 0px; } 36% { rx: 104px; } 100% { rx: 75px; } }
-    @keyframes m2 { 0% { rx: 41px; } 20% { rx: 0px; } 21% { rx: 104px; } 100% { rx: 41px; } }
+    /* Continuous rotation, one direction only. Each meridian is the FRONT half of a longitude:
+       a right-half arc squashed by scaleX(sin λ). As λ goes −90° → +90° the arc travels from the
+       left edge, through the centre, to the right edge at constant speed (no slow-down at the edges); then it is round the back
+       (hidden) until it re-enters on the left edge — where it coincides with the outline, so no pop.
+       8 longitudes 45° apart (1.5s delays on a 12s turn) → 4 arcs on the front at any time. */
+    .mer { transform-box: view-box; transform-origin: 153px 153px; vector-effect: non-scaling-stroke; }
+    @keyframes turn {
+      0%     { transform: scaleX(-1); opacity: 1; animation-timing-function: linear; }
+      50%    { transform: scaleX(1);  opacity: 1; }
+      50.01% { transform: scaleX(1);  opacity: 0; }
+      99.99% { transform: scaleX(-1); opacity: 0; }
+      100%   { transform: scaleX(-1); opacity: 1; }
+    }
     @keyframes bob { 50% { transform: translateY(-5px); } }
     @keyframes shade { 50% { transform: scale(0.82); opacity: 0.6; } }
     @keyframes orbit { from { offset-distance: 0%; } to { offset-distance: 100%; } }
@@ -38,8 +55,15 @@
 
   <!-- globe: outline, two meridians, two latitudes, equator -->
   <circle class="ln" cx="153" cy="153" r="104" />
-  <ellipse class="ln m1" cx="153" cy="153" rx="75" ry="104" />
-  <ellipse class="ln m2" cx="153" cy="153" rx="41" ry="104" />
+  <!-- meridians: front-half arcs (static pose for reduced motion: λ = −67.5° … 67.5°) -->
+  <path class="ln mer d0" d="M153 49 A104 104 0 0 1 153 257" style="transform: scaleX(-0.924)" />
+  <path class="ln mer d1" d="M153 49 A104 104 0 0 1 153 257" style="transform: scaleX(-0.383)" />
+  <path class="ln mer d2" d="M153 49 A104 104 0 0 1 153 257" style="transform: scaleX(0.383)" />
+  <path class="ln mer d3" d="M153 49 A104 104 0 0 1 153 257" style="transform: scaleX(0.924)" />
+  <path class="ln mer d4" d="M153 49 A104 104 0 0 1 153 257" style="opacity: 0" />
+  <path class="ln mer d5" d="M153 49 A104 104 0 0 1 153 257" style="opacity: 0" />
+  <path class="ln mer d6" d="M153 49 A104 104 0 0 1 153 257" style="opacity: 0" />
+  <path class="ln mer d7" d="M153 49 A104 104 0 0 1 153 257" style="opacity: 0" />
   <line class="lat" x1="63" y1="101" x2="243" y2="101" />
   <line class="lat" x1="63" y1="205" x2="243" y2="205" />
   <line class="lat" x1="49" y1="153" x2="257" y2="153" />
