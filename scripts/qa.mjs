@@ -36,8 +36,8 @@ async function run(width) {
   // Accordion
   await page.click('#faq-q-texts');
   const acc = await page.evaluate(() => ({
-    open: !document.querySelector('#faq-a-texts').hidden,
-    firstClosed: document.querySelector('#faq-a-serial').hidden,
+    open: !document.querySelector('#faq-a-texts').inert,
+    firstClosed: document.querySelector('#faq-a-serial').inert,
     expanded: document.querySelector('#faq-q-texts').getAttribute('aria-expanded'),
   }));
   check(`${tag} FAQ opens one item and closes the other`, acc.open && acc.firstClosed && acc.expanded === 'true');
