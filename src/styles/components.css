@@ -256,8 +256,10 @@
   .bd-tile__body {
     @apply mt-2 max-w-[342px] text-base leading-6 text-pretty text-body;
   }
+  /* Figma: dot centre 61px down the 132px card. Between 1200 and 1439 the cards grow taller (text
+     wraps), so the dot is centred instead, keeping the top and bottom dots level with the ring. */
   .bd-dot {
-    @apply absolute top-[56.8px] hidden size-2 rounded-[4px] border-2 border-white bg-primary shadow-[0_0_0_1px_var(--color-primary),0_0_12.8px_rgb(6_106_254/0.4)] desk:block;
+    @apply absolute top-[calc(50%-4px)] wide:top-[56.8px] hidden size-2 rounded-[4px] border-2 border-white bg-primary shadow-[0_0_0_1px_var(--color-primary),0_0_12.8px_rgb(6_106_254/0.4)] desk:block;
   }
 
   /* Pricing — Figma 249:22345 (464×489, p24, r16) */

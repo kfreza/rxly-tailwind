@@ -14,8 +14,10 @@
       <!-- Centre: rings + globe (249:22190) -->
       <div aria-hidden="true" class="pointer-events-none relative mx-auto mb-2 aspect-square w-[280px] md:col-span-2 desk:absolute desk:top-1/2 desk:left-1/2 desk:mb-0 desk:w-[589px] desk:-translate-x-1/2 desk:-translate-y-1/2">
         <img src="/images/bd-glow.svg" alt="" class="absolute top-1/2 left-1/2 w-[122%] max-w-none -translate-1/2" />
-        <div class="absolute inset-0 rounded-full border border-primary/10 bg-white/70"></div>
-        <div class="absolute inset-[12.86%] rounded-full border border-primary/30 bg-white opacity-70"></div>
+        <!-- Rings measured on the prototype: outer line r 299.4 (a 600 circle), inner r 221.2 (443).
+             js/bd-ring.js resizes the outer ring so it runs into the card dots at every width. -->
+        <div data-bd-ring class="absolute -inset-[0.934%] rounded-full border border-primary/10 bg-white/70"></div>
+        <div class="absolute inset-[12.36%] rounded-full border border-primary/30 bg-white opacity-70"></div>
         <div class="absolute top-1/2 left-[2.3%] hidden h-px w-[36.85%] bg-linear-to-r from-primary/0 to-primary desk:block"></div>
         <div class="absolute top-1/2 right-[2.3%] hidden h-px w-[36.8%] bg-linear-to-l from-primary/0 to-primary desk:block"></div>
         <!-- Figma video fill on Ellipse 10 (249:22196), rebuilt as an animated SVG (settings at the top of the file) -->

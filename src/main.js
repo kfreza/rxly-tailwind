@@ -9,6 +9,7 @@ import { initScatter } from './js/scatter.js';
 import { initPinCards } from './js/pin-cards.js';
 import { initTitleMotion } from './js/title-motion.js';
 import { initDotGlobes } from './js/dot-globe.js';
+import { initBdRing } from './js/bd-ring.js';
 
 initI18n();
 initTitleMotion(); // after i18n, so Bangla titles split by word
@@ -20,3 +21,4 @@ initReveal();
 initScatter();
 initPinCards();
 initDotGlobes();
+initBdRing();
