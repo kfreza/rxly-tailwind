@@ -14,6 +14,11 @@
       <div aria-hidden="true" class="pointer-events-none absolute top-[207px] -left-[240px] -z-10 hidden size-[812px] mask-alpha mask-no-repeat mask-size-[826px_827px] mask-position-[0.68px_-9.36px] [mask-image:url(/images/faq-glow-mask.svg)] desk:block">
         <img src="/images/faq-glow.png" alt="" class="size-full" loading="lazy" />
       </div>
+      <!-- Dotted Earth behind the dome: the Figma video fill, rebuilt in code (js/dot-globe.js).
+           Same frame as the dome; Earth centre (364, 321), radius 325 in Figma units. Desktop only, like Figma. -->
+      <div aria-hidden="true" class="pointer-events-none absolute top-[260px] -left-10 hidden aspect-[467/478] w-[380px] desk:block wide:-left-[186px] wide:w-[467px]">
+        <canvas data-dot-globe class="absolute top-[-0.900%] left-[8.351%] h-[135.983%] w-[139.186%]"></canvas>
+      </div>
       <!-- Dome (Figma 364:2): image enlarged and cropped inside a 467×478 frame -->
       <div aria-hidden="true" class="pointer-events-none relative mx-auto mt-8 aspect-[467/478] w-[260px] overflow-hidden select-none md:w-[340px] desk:absolute desk:top-[260px] desk:-left-10 desk:mt-0 desk:w-[380px] wide:-left-[186px] wide:w-[467px]">
         <img src="/images/faq-dome.webp" alt="" width="1210" height="1100" class="absolute top-[-8.45%] left-[-17.81%] h-[114.8%] w-[129.03%] max-w-none" loading="lazy" />

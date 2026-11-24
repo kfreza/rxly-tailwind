@@ -111,6 +111,7 @@ docs/                       BRIEF.md, PLAN.md
 ## Waiting on
 
 - [x] **Globe video** for the "Built for Bangladesh" centre (Figma layer `249:22196`): rebuilt as an animated SVG (`public/images/bd-globe.svg`) from frame measurements of the original Figma video; settings block at the top of the file; still first frame with reduced motion.
+- [x] **Other Figma videos** rebuilt in code: gradient ring behind "Four screens" (`public/images/screens-ring.svg`) and the spinning dotted Earth behind the FAQ dome (`js/dot-globe.js`).
 - [ ] **Log in / Start free URLs.** Currently `https://app.rxly.net/login` and `/register?plan=…`. Confirm the real app URLs.
 - [ ] **Bangla review** of the 62 page-specific strings in `src/i18n/bn.manual.json`
 - [ ] **Placeholder copy in Figma's "How it works" cards:** `$80` (should be ৳?), `care.clario.health/maya` (should be an Rxly link?), "Dr. Maya Khan", "Amelia Brown" (Bangladeshi names elsewhere)
