@@ -9,7 +9,7 @@
    converge bangladesh   line 1 from the left, line 2 from the right
    flip     pricing      words flip up from a 3D tilt
    lines    faq          title rises from below its baseline; slower pen-stroke underline
-   track    cta          wide letter spacing tightens into place                                  */
+   track    cta          letters start widely spaced and slide together (transform only)                                  */
 
 /* Structure helpers (always on; they don't change the resting look) */
 /* Inline underline SVGs: don't clip the round stroke caps at the edges */
@@ -208,16 +208,18 @@
   [data-title-anim='track'] {
     --tm-draw: 1.05s;
   }
-  .tm-play[data-title-anim='track'] .tm-line {
+  /* Letters start where 0.32em of extra letter-spacing would put them and slide home. Done with
+     transform (not letter-spacing), so the lines never re-wrap and nothing below the title moves. */
+  .tm-play[data-title-anim='track'] :is(.tm-c, .tm-w:not(:has(.tm-c)), .tm-hl) {
     animation: tm-track 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   }
-  .tm-play[data-title-anim='track'] .tm-line:last-child {
+  .tm-play[data-title-anim='track'] .tm-line:last-child :is(.tm-c, .tm-w:not(:has(.tm-c)), .tm-hl) {
     animation-delay: 0.12s;
   }
   @keyframes tm-track {
     from {
       opacity: 0;
-      letter-spacing: 0.32em;
+      transform: translateX(calc(var(--o) * 0.32em));
       filter: blur(6px);
     }
   }

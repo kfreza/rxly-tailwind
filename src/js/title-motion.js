@@ -3,7 +3,7 @@
 // spans, always keeping the blue highlighted word (.mark / the CTA's underlined span) whole.
 // Bangla titles are split by word only, so conjuncts never break. Plays once in view (or once
 // scrolled past), checked on every scroll frame.
-const SPLIT = { rise: 'masked', blur: 'words', wave: 'chars', flip: 'words' };
+const SPLIT = { rise: 'masked', blur: 'words', wave: 'chars', flip: 'words', track: 'chars' };
 
 const isHighlight = (el) => el.classList?.contains('mark') || !!el.querySelector?.(':scope > img, :scope > svg');
 
@@ -51,6 +51,7 @@ function split(node, mode, counter) {
     if (child.nodeType !== Node.ELEMENT_NODE || /^(br|img|svg)$/i.test(child.tagName)) return;
     if (isHighlight(child)) {
       // the highlighted word moves as one unit
+      child.classList.add('tm-hl');
       child.style.setProperty('--i', counter.n++);
       if (mode === 'masked') {
         const m = document.createElement('span');
@@ -70,6 +71,13 @@ function prepare(title) {
   let mode = SPLIT[anim];
   if (mode === 'chars' && document.documentElement.lang === 'bn') mode = 'words';
   if (mode) split(title, mode, { n: 0 });
+  if (anim === 'track') {
+    // Each letter (or the highlighted word, or a Bangla word) gets its place in its line, so the CSS
+    // can start it where wide letter-spacing would put it, using transform only: no reflow.
+    title.querySelectorAll('.tm-line').forEach((line) => {
+      line.querySelectorAll('.tm-c, .tm-w:not(:has(.tm-c)), .tm-hl').forEach((u, i) => u.style.setProperty('--o', i));
+    });
+  }
   if (anim === 'lines') {
     // one masked line holding the whole title
     const inner = document.createElement('span');
@@ -93,6 +101,12 @@ function unsplit(title) {
     } else w.replaceWith(document.createTextNode(w.textContent));
   });
   title.querySelectorAll('.tm-mask, .tm-in').forEach((m) => m.replaceWith(...m.childNodes));
+  title.querySelectorAll('.tm-hl').forEach((el) => el.classList.remove('tm-hl'));
+  title.querySelectorAll('[style]').forEach((el) => {
+    el.style.removeProperty('--i');
+    el.style.removeProperty('--o');
+    if (!el.getAttribute('style')) el.removeAttribute('style');
+  });
   title.normalize();
 }
 
