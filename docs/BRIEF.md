@@ -175,7 +175,7 @@ _This is the summary. The step-by-step checklist is in PLAN.md._
 3. **Screens tabs:** the team will provide screenshots from the Rxly dashboard for all four tabs. Until then the Front desk image is used as a placeholder.
 4. **Figma frame `249:22153`:** resolved. The frame has real layers, so exact values are read section by section with `get_design_context`.
 
-## Build status (2026-11-23)
+## Build status (2026-11-28)
 
 The page is built and checked. See [PLAN.md](PLAN.md) for the phase checklist, scripts and results (Lighthouse mobile 99/100/100/100, desktop 100/100/100/100; 42/42 interaction checks).
 
@@ -183,11 +183,13 @@ The page is built and checked. See [PLAN.md](PLAN.md) for the phase checklist, s
 - **Screens tab screenshots** come from the live site (`rxly.net/images/landing/desk.jpg`, `room.jpg`, `pad.jpg`, `book.png`, `status.png`). The copy for the Doctor's room, Prescription pad and Patient's phone tabs also comes from the live site, because Figma only has the Front desk tab.
 - **FAQ answers** come from the live site (Figma only shows the first answer).
 - **Bangla:** 107 strings reuse the official Rxly app translations (`design/i18n/bn-official.json`, read from the live app's Bangla locale); 62 page-specific strings were written for this page (`src/i18n/bn.manual.json`).
-- **"What it does" animations**: the 3 illustrations are animated SVGs supplied by the team (`public/images/scene-queue.svg`, `scene-page.svg`, `scene-brand.svg`), used unmodified as `<img>`.
+- **"What it does" animations**: the 3 illustrations are animated SVGs supplied by the team (`public/images/scene-queue.svg`, `scene-page.svg`, `scene-brand.svg`), used as `<img>`. Only change: `scene-brand.svg` had its indigo/violet recoloured to the accent blue `#066AFE` family (same tint levels); mint and neutrals untouched.
 - **Globe video** in "Built for Bangladesh": Figma uses a video fill that the Figma API can't export. Done: rebuilt as an animated SVG, `public/images/bd-globe.svg`, from measurements of the original video (taken from the Figma prototype): grid turns continuously (36° per 5 s, never snaps back), orbit dot laps once (pale on the back half), cube bobs and rocks ±6°. Line weight matches the video within ~4%. All timings and colours are in its "Settings" block; reduced motion shows the first frame.
 - **The other two Figma videos**, also rebuilt in code from measurements of the originals (taken from the Figma prototype stream):
   - *Gradient ring* behind "Four screens" (`public/images/screens-ring.svg`, desktop): ring centre (−24, 82) from the section top in the 1920 frame, radii 548/413; soft colour blobs keyframed every 0.5 s from the video, colours boosted to match how Figma shows the fill; plays forward then back so it never jumps.
   - *Dotted Earth* behind the FAQ dome (`js/dot-globe.js`, `<canvas data-dot-globe>`, desktop): land map (108 × 2.65° grid, 1,287 dots) reconstructed from the video; tilt 12.5°, 21.67°/s left → right, dot 0.011 × radius, #424242; centre (364, 321), radius 325 in the dome frame. Settings at the top of the file; still with reduced motion.
+- **Built for Bangladesh ring:** the outer ring is a 600px circle in Figma; on the site it is sized at runtime (`js/bd-ring.js`) so it always runs into the card dots, because the globe frame is fixed while the card columns flex with the window. Between 1200 and 1439px the dots sit at the card centre (the cards grow taller there).
+- **CTA background stays the still Figma image.** An animated version (each hexagon tile lighting up) was tried and dropped.
 - **Buttons** use Plus Jakarta Sans Medium (Figma uses Inter Medium for button labels only; unified to the brand font).
 - **Floating hero cards and the FAQ dome** use Figma's exact offsets from 1440px up, and smaller offsets between 1200 and 1439 so they aren't clipped.
 
